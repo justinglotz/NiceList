@@ -1,9 +1,24 @@
-import React from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import Link from 'next/link';
 import PersonCard from '../../components/cards/personCard';
+import { getPeople } from '../../api/personData';
+import { useAuth } from '../../utils/context/authContext';
 
 export default function PeoplePage() {
+  const [people, setPeople] = useState([]);
+  const { user } = useAuth();
+
+  const getAllThePeople = () => {
+    getPeople(user.uid).then(setPeople);
+  };
+
+  useEffect(() => {
+    getAllThePeople();
+  }, []);
+
   return (
     <div>
       <div className="flex justify-center items-center">
@@ -11,7 +26,9 @@ export default function PeoplePage() {
           <Button>New Person</Button>
         </Link>
       </div>
-      <PersonCard />
+      {people.map((person) => (
+        <PersonCard key={person.personId} personObj={person} onUpdate={getAllThePeople} />
+      ))}
     </div>
   );
 }

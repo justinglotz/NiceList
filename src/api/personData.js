@@ -2,37 +2,38 @@
 
 const endpoint = process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL;
 
-// const getPeople = (uid) =>
-//   new Promise((resolve, reject) => {
-//     fetch(`${endpoint}/people.json=${uid}`, {
-//       method: 'GET',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//     })
-//       .then((response) => response.json())
-//       .then((data) => {
-//         if (data) {
-//           resolve(Object.values(data));
-//         } else {
-//           resolve([]);
-//         }
-//       })
-//       .catch(reject);
-//   });
+// GET ALL PEOPLE FOR A SPECIFIC USER
+const getPeople = (uid) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/people.json?orderBy="uid"&equalTo="${uid}"`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data) {
+          resolve(Object.values(data));
+        } else {
+          resolve([]);
+        }
+      })
+      .catch(reject);
+  });
 
-// DELETE TOUR
-// const deleteTour = (TourId) =>
-//   new Promise((resolve, reject) => {
-//     fetch(`${endpoint}/${TourId}`, {
-//       method: 'DELETE',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//     })
-//       .then((data) => resolve(data))
-//       .catch(reject);
-//   });
+// DELETE PERSON
+const deletePerson = (PersonId) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/people/${PersonId}.json`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((data) => resolve(data))
+      .catch(reject);
+  });
 
 // GET SINGLE TOUR
 // const getSingleTour = (TourId) =>
@@ -92,4 +93,4 @@ const updatePerson = (payload) =>
 //       .catch(reject);
 //   });
 
-export { createPerson, updatePerson };
+export { createPerson, updatePerson, deletePerson, getPeople };
