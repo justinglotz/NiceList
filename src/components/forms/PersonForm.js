@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Button } from 'react-bootstrap';
 import { useRouter } from 'next/navigation';
@@ -21,20 +21,30 @@ export default function GiftForm({ obj = initialState }) {
     setFormInput({ ...formInput, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const payload = {
-      ...formInput,
-      uid: user.uid,
-    };
-    console.log(payload);
-    createPerson(payload).then(({ name }) => {
-      const patchPayload = { personId: name };
-      updatePerson(patchPayload).then(() => {
-        router.push('/people');
+    if (obj.personId) {
+      const payload = {
+        ...formInput,
+        uid: user.uid,
+      };
+      updatePerson(payload).then(() => router.push(`/people`));
+    } else {
+      const payload = { ...formInput, uid: user.uid };
+      createPerson(payload).then(({ name }) => {
+        const patchPayload = { personId: name };
+        updatePerson(patchPayload).then(() => {
+          router.push('/people');
+        });
       });
-    });
+    }
   };
+
+  useEffect(() => {
+    if (obj.personId) {
+      setFormInput(obj);
+    }
+  }, [obj, user]);
 
   return (
     <div className="flex justify-center">
