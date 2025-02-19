@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import Link from 'next/link';
+import PersonCard from '../../components/cards/personCard';
 
 export default function PeoplePage() {
   return (
@@ -10,6 +11,7 @@ export default function PeoplePage() {
           <Button>New Person</Button>
         </Link>
       </div>
+      <PersonCard />
     </div>
   );
 }
