@@ -35,19 +35,19 @@ const deletePerson = (PersonId) =>
       .catch(reject);
   });
 
-// GET SINGLE TOUR
-// const getSingleTour = (TourId) =>
-//   new Promise((resolve, reject) => {
-//     fetch(`${endpoint}/${TourId}`, {
-//       method: 'GET',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//     })
-//       .then((response) => response.json())
-//       .then((data) => resolve(data))
-//       .catch(reject);
-//   });
+// GET SINGLE PERSON
+const getSinglePerson = (PersonId) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/people/${PersonId}.json`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => resolve(data))
+      .catch(reject);
+  });
 
 // CREATE TOUR
 const createPerson = (payload) =>
@@ -93,4 +93,4 @@ const updatePerson = (payload) =>
 //       .catch(reject);
 //   });
 
-export { createPerson, updatePerson, deletePerson, getPeople };
+export { createPerson, updatePerson, deletePerson, getPeople, getSinglePerson };

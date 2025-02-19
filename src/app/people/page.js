@@ -26,9 +26,11 @@ export default function PeoplePage() {
           <Button>New Person</Button>
         </Link>
       </div>
-      {people.map((person) => (
-        <PersonCard key={person.personId} personObj={person} onUpdate={getAllThePeople} />
-      ))}
+      <div className="flex flex-row gap-3 m-2">
+        {people.map((person) => (
+          <PersonCard key={person.personId} personObj={person} onUpdate={getAllThePeople} />
+        ))}
+      </div>
     </div>
   );
 }
