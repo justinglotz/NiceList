@@ -3,6 +3,7 @@
 import React from 'react';
 import { Button, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import Link from 'next/link';
 import { deletePerson } from '../../api/personData';
 
 export default function PersonCard({ personObj, onUpdate }) {
@@ -17,7 +18,9 @@ export default function PersonCard({ personObj, onUpdate }) {
         <Card.Body>
           <Card.Title>{personObj.name}</Card.Title>
           <Card.Subtitle className="mb-2 text-muted">{personObj.address}</Card.Subtitle>
-          <Button>Edit</Button>
+          <Link href={`/person/edit/${personObj.personId}`} passHref>
+            <Button>Edit</Button>
+          </Link>
           <Button variant="danger" onClick={deleteThisPerson}>
             Delete
           </Button>

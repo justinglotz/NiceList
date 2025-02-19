@@ -64,4 +64,18 @@ const deleteGift = (giftId) =>
       .catch(reject);
   });
 
-export { createGift, updateGift, getGifts, deleteGift };
+// GET SINGLE GIFT
+const getSingleGift = (giftId) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/gifts/${giftId}.json`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => resolve(data))
+      .catch(reject);
+  });
+
+export { createGift, updateGift, getGifts, deleteGift, getSingleGift };
