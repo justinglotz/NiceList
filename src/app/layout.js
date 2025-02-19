@@ -1,15 +1,15 @@
-import { Inter } from 'next/font/google';
+import { Poppins } from 'next/font/google';
 import PropTypes from 'prop-types';
 import ClientProvider from '@/utils/context/ClientProvider';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@/styles/globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const poppins = Poppins({ subsets: ['latin'], weight: ['400', '700'] });
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={poppins.className}>
         <ClientProvider>{children}</ClientProvider>
       </body>
     </html>
@@ -26,9 +26,10 @@ export const generateMetadata = async ({ params }) => {
   const { slug } = params; // Example of accessing dynamic route params
 
   return {
-    title: `TEMPLATE - ${slug || 'HOME'}`, // Dynamically set the title using route parameters
+    title: `NiceList - ${slug || 'HOME'}`, // Dynamically set the title using route parameters
     description: `This is a dynamically generated description for ${slug}.`, // Dynamic description
     // Add other metadata fields as needed, like keywords, open graph tags, etc.
+    icons: '/favicon.svg',
     keywords: [`${slug}`, 'dynamic', 'page'],
     openGraph: {
       title: `Open Graph Title for ${slug}`,
