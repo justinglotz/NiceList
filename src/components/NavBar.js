@@ -8,7 +8,7 @@ export default function NavBar() {
   return (
     <div className="flex justify-center mt-[13px]">
       <div className="w-[670px] h-[105px] relative">
-        <div className="w-[669px] h-[60px] left-0 top-0 absolute bg-[#7fa087] rounded-tl-[17px] rounded-tr-[17px]" />
+        <div className="w-[669px] h-[60px] left-0 top-0 absolute bg-[#7fa087] rounded-[17px]" />
         <div data-svg-wrapper className="left-[238px] top-[13px] absolute">
           <svg width="29" height="32" viewBox="0 0 29 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -61,8 +61,8 @@ export default function NavBar() {
             />
           </svg>
         </div>
-        <div className="w-[669px] h-[46px] left-0 top-[59px] absolute bg-[#fdf5f5] rounded-bl-[17px] rounded-br-[17px] border border-[#7fa087]" />
-        <div className="w-[152px] h-[37px] left-[15px] top-[68px] absolute text-black text-base">Search...</div>
+        {/* <div className="w-[669px] h-[46px] left-0 top-[59px] absolute bg-[#fdf5f5] rounded-bl-[17px] rounded-br-[17px] border border-[#7fa087]" /> */}
+        {/* <div className="w-[152px] h-[37px] left-[15px] top-[68px] absolute text-black text-base">Search...</div> */}
       </div>
       <Button variant="danger" type="button" size="lg" className="copy-btn" onClick={signOut}>
         Sign Out
