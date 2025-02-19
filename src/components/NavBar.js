@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import Link from 'next/link';
 import { signOut } from '../utils/auth';
 
 export default function NavBar() {
@@ -32,10 +33,26 @@ export default function NavBar() {
             />
           </svg>
         </div>
-        <div className="w-[102px] h-[21px] left-[100px] top-[21px] absolute text-black text-base leading-snug">Dashboard</div>
-        <div className="w-[42px] h-[21px] left-[276px] top-[21px] absolute text-black text-base leading-snug">Gifts</div>
-        <div className="w-[83px] h-[21px] left-[409px] top-[19px] absolute text-black text-base leading-snug">People</div>
-        <div className="w-[84px] h-[21px] left-[560px] top-[19px] absolute text-black text-base leading-snug">Gift Ideas</div>
+        <div className="w-[102px] h-[21px] left-[100px] top-[21px] absolute text-black text-base leading-snug">
+          <Link className="nav-link" href="/">
+            Dashboard
+          </Link>
+        </div>
+        <div className="w-[42px] h-[21px] left-[276px] top-[21px] absolute text-black text-base leading-snug">
+          <Link className="nav-link" href="/gifts">
+            Gifts
+          </Link>
+        </div>
+        <div className="w-[83px] h-[21px] left-[409px] top-[19px] absolute text-black text-base leading-snug">
+          <Link className="nav-link" href="/people">
+            People
+          </Link>
+        </div>
+        <div className="w-[84px] h-[21px] left-[560px] top-[19px] absolute text-black text-base leading-snug">
+          <Link className="nav-link" href="/gift-ideas">
+            Gift Ideas
+          </Link>
+        </div>
         <div data-svg-wrapper className="left-[519.88px] top-[18.62px] absolute">
           <svg width="28" height="24" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
