@@ -4,9 +4,16 @@ import React, { useEffect, useState } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { getSinglePerson } from '../../api/personData';
+import { deleteGift } from '../../api/giftData';
 
-export default function GiftCard({ giftObj }) {
-  const [person, setPerson] = useState('woo');
+export default function GiftCard({ giftObj, onUpdate }) {
+  const [person, setPerson] = useState('');
+
+  const deleteThisGift = () => {
+    if (window.confirm(`Delete ${giftObj.name}?`)) {
+      deleteGift(giftObj.giftId).then(() => onUpdate());
+    }
+  };
 
   useEffect(() => {
     if (giftObj.personId) {
@@ -23,7 +30,9 @@ export default function GiftCard({ giftObj }) {
           <Card.Link href={giftObj.url}>Gift Link</Card.Link>
           <div>
             <Button>Edit</Button>
-            <Button variant="danger">Delete</Button>
+            <Button variant="danger" onClick={deleteThisGift}>
+              Delete
+            </Button>
           </div>
         </Card.Body>
       </Card>
@@ -37,5 +46,7 @@ GiftCard.propTypes = {
     personId: PropTypes.string,
     uid: PropTypes.string,
     url: PropTypes.string,
+    giftId: PropTypes.string,
   }).isRequired,
+  onUpdate: PropTypes.func.isRequired,
 };

@@ -51,4 +51,17 @@ const getGifts = (uid) =>
       .catch(reject);
   });
 
-export { createGift, updateGift, getGifts };
+// DELETE GIFT
+const deleteGift = (giftId) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/gifts/${giftId}.json`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((data) => resolve(data))
+      .catch(reject);
+  });
+
+export { createGift, updateGift, getGifts, deleteGift };
