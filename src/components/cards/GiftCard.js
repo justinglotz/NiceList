@@ -27,7 +27,7 @@ export default function GiftCard({ giftObj, onUpdate }) {
       <Card style={{ width: '18rem' }}>
         <Card.Body>
           <Card.Title>{giftObj.name}</Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">Person: {person.name}</Card.Subtitle>
+          <Card.Subtitle className="mb-2 text-muted">Person: {person?.name || 'No people'}</Card.Subtitle>
           <Card.Link href={giftObj.url} target="_blank" rel="noopener noreferrer">
             Gift Link
           </Card.Link>

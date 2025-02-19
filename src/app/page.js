@@ -12,12 +12,12 @@ function Home() {
       className="text-center d-flex flex-column justify-content-center align-content-center"
       style={{
         padding: '30px',
-        maxWidth: '400px',
         margin: '0 auto',
       }}
     >
       <h1>Hello {user.displayName}! </h1>
-      <p>Click the button below to logout!</p>
+      <p>Create a Person for each person on your list</p>
+      <p>Then create gifts and assign them to people</p>
     </div>
   );
 }
