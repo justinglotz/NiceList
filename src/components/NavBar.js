@@ -1,12 +1,30 @@
 import React from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignal, faGift, faUsers, faListUl, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faSignal, faGift, faUsers, faListUl, faMagnifyingGlass, faTree } from '@fortawesome/free-solid-svg-icons';
+import { Quicksand } from 'next/font/google';
 import { signOut } from '../utils/auth';
+import { useAuth } from '../utils/context/authContext';
+
+const quicksand = Quicksand({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'] });
 
 export default function NavBar() {
+  const { user } = useAuth();
+  console.log(user);
   return (
     <>
+      <div className="absolute">
+        <div className={`w-[331px] h-[105px] bg-[#7fa087] rounded-[17px] relative left-4 ${quicksand.className}`}>
+          <div className="p-2">
+            <div className="text-black text-xl font-normal">{user.displayName}`&apos;`s</div>
+            <div className="text-black text-7xl font-bold leading-none">NiceList</div>
+          </div>
+          <div className="absolute bottom-2 right-2">
+            <FontAwesomeIcon icon={faTree} size="2xl" className="text-black" />
+          </div>
+        </div>
+      </div>
+
       <div className="flex justify-center mt-4">
         <div className="w-[670px]">
           {/* Main Navigation */}
@@ -50,10 +68,9 @@ export default function NavBar() {
               <input type="text" placeholder="Search..." className="bg-transparent border-none outline-none text-black w-full" />
             </div>
           </nav>
-
-          {/* Sign Out Button */}
         </div>
       </div>
+
       <div className="absolute top-4 right-4 mt-1">
         <button type="button" className="px-4 py-2 text-lg bg-[#7fa087] hover:bg-[#6b8872] text-black rounded" onClick={signOut}>
           Sign Out
