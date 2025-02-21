@@ -1,72 +1,64 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import { Button } from 'react-bootstrap';
 import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignal, faGift, faUsers, faListUl, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { signOut } from '../utils/auth';
 
 export default function NavBar() {
   return (
-    <div className="flex justify-center mt-[13px]">
-      <div className="w-[670px] h-[105px] relative">
-        <div className="w-[669px] h-[60px] left-0 top-0 absolute bg-[#7fa087] rounded-[17px]" />
-        <div data-svg-wrapper className="left-[238px] top-[13px] absolute">
-          <svg width="29" height="32" viewBox="0 0 29 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M10.79 4.3L12.7611 8H12.6875H8.60938C7.35762 8 6.34375 6.88125 6.34375 5.5C6.34375 4.11875 7.35762 3 8.60938 3H8.73398C9.57793 3 10.3652 3.49375 10.79 4.3ZM3.625 5.5C3.625 6.4 3.82324 7.25 4.16875 8H1.8125C0.809961 8 0 8.89375 0 10V14C0 15.1062 0.809961 16 1.8125 16H27.1875C28.19 16 29 15.1062 29 14V10C29 8.89375 28.19 8 27.1875 8H24.8312C25.1768 7.25 25.375 6.4 25.375 5.5C25.375 2.4625 23.1434 0 20.3906 0H20.266C18.4592 0 16.7826 1.05625 15.865 2.775L14.5 5.34375L13.135 2.78125C12.2174 1.05625 10.5408 0 8.73398 0H8.60938C5.85664 0 3.625 2.4625 3.625 5.5ZM22.6562 5.5C22.6562 6.88125 21.6424 8 20.3906 8H16.3125H16.2389L18.21 4.3C18.6404 3.49375 19.4221 3 20.266 3H20.3906C21.6424 3 22.6562 4.11875 22.6562 5.5ZM1.8125 18V29C1.8125 30.6562 3.03027 32 4.53125 32H12.6875V18H1.8125ZM16.3125 32H24.4688C25.9697 32 27.1875 30.6562 27.1875 29V18H16.3125V32Z"
-              fill="black"
-            />
-          </svg>
+    <>
+      <div className="flex justify-center mt-4">
+        <div className="w-[670px]">
+          {/* Main Navigation */}
+          <nav className="flex flex-col">
+            {/* Top Navigation Bar */}
+            <div className="bg-[#7fa087] rounded-t-[17px] h-[60px] flex items-center">
+              <div className="flex items-center justify-between w-full px-4">
+                {/* Dashboard Link */}
+                <div className="flex items-center gap-3">
+                  <Link className="nav-link text-black text-base" href="/">
+                    <FontAwesomeIcon icon={faSignal} className="text-black" size="lg" /> Dashboard
+                  </Link>
+                </div>
+
+                {/* Gifts Link */}
+                <div className="flex items-center gap-3">
+                  <Link className="nav-link text-black text-base" href="/gifts">
+                    <FontAwesomeIcon icon={faGift} className="w-6 h-6 text-black" size="lg" /> Gifts
+                  </Link>
+                </div>
+
+                {/* People Link */}
+                <div className="flex items-center gap-3">
+                  <Link className="nav-link text-black text-base" href="/people">
+                    <FontAwesomeIcon icon={faUsers} className="w-6 h-6 text-black" size="lg" /> People
+                  </Link>
+                </div>
+
+                {/* Gift Ideas Link */}
+                <div className="flex items-center gap-3">
+                  <Link className="nav-link text-black text-base" href="/gift-ideas">
+                    <FontAwesomeIcon icon={faListUl} className="w-6 h-6" size="lg" /> Gift Ideas
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* Search Bar */}
+            <div className="flex items-center bg-[#FDF6F6] h-[45px] rounded-b-[17px] border border-[#7fa087] p-3">
+              <FontAwesomeIcon icon={faMagnifyingGlass} className="text-gray-400 mr-3" />
+              <input type="text" placeholder="Search..." className="bg-transparent border-none outline-none text-black w-full" />
+            </div>
+          </nav>
+
+          {/* Sign Out Button */}
         </div>
-        <div data-svg-wrapper className="left-[377px] top-[12px] absolute">
-          <svg width="26" height="36" viewBox="0 0 26 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M9.10038 3.375C9.10038 2.47989 9.51128 1.62145 10.2427 0.988515C10.9741 0.355579 11.966 0 13.0004 0C14.0347 0 15.0267 0.355579 15.7581 0.988515C16.4895 1.62145 16.9004 2.47989 16.9004 3.375C16.9004 4.27011 16.4895 5.12855 15.7581 5.76149C15.0267 6.39442 14.0347 6.75 13.0004 6.75C11.966 6.75 10.9741 6.39442 10.2427 5.76149C9.51128 5.12855 9.10038 4.27011 9.10038 3.375ZM12.3504 24.75V33.75C12.3504 34.9945 11.1885 36 9.75038 36C8.31226 36 7.15038 34.9945 7.15038 33.75V18.0633L4.82663 21.4102C4.08726 22.4719 2.48663 22.8164 1.25976 22.1766C0.0328837 21.5367 -0.365241 20.1516 0.374134 19.0898L5.11101 12.2695C6.52476 10.2375 9.05976 8.99297 11.7979 8.99297H14.211C16.9491 8.99297 19.4841 10.2375 20.8979 12.2695L25.6348 19.0898C26.3741 20.1516 25.976 21.5367 24.7491 22.1766C23.5223 22.8164 21.9216 22.4719 21.1823 21.4102L18.8504 18.0633V33.75C18.8504 34.9945 17.6885 36 16.2504 36C14.8123 36 13.6504 34.9945 13.6504 33.75V24.75H12.3504Z"
-              fill="black"
-            />
-          </svg>
-        </div>
-        <div data-svg-wrapper className="left-[64.45px] top-[15px] absolute">
-          <svg width="27" height="29" viewBox="0 0 27 29" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M25.1 0C25.902 0 26.55 0.809961 26.55 1.8125V27.1875C26.55 28.19 25.902 29 25.1 29C24.298 29 23.65 28.19 23.65 27.1875V1.8125C23.65 0.809961 24.298 0 25.1 0ZM19.3 5.4375C20.102 5.4375 20.75 6.24746 20.75 7.25V27.1875C20.75 28.19 20.102 29 19.3 29C18.498 29 17.85 28.19 17.85 27.1875V7.25C17.85 6.24746 18.498 5.4375 19.3 5.4375ZM14.95 12.6875V27.1875C14.95 28.19 14.302 29 13.5 29C12.698 29 12.05 28.19 12.05 27.1875V12.6875C12.05 11.685 12.698 10.875 13.5 10.875C14.302 10.875 14.95 11.685 14.95 12.6875ZM7.70001 16.3125C8.50204 16.3125 9.15001 17.1225 9.15001 18.125V27.1875C9.15001 28.19 8.50204 29 7.70001 29C6.89798 29 6.25001 28.19 6.25001 27.1875V18.125C6.25001 17.1225 6.89798 16.3125 7.70001 16.3125ZM3.35001 23.5625V27.1875C3.35001 28.19 2.70204 29 1.90001 29C1.09798 29 0.450012 28.19 0.450012 27.1875V23.5625C0.450012 22.56 1.09798 21.75 1.90001 21.75C2.70204 21.75 3.35001 22.56 3.35001 23.5625Z"
-              fill="black"
-            />
-          </svg>
-        </div>
-        <div className="w-[102px] h-[21px] left-[100px] top-[21px] absolute text-black text-base leading-snug">
-          <Link className="nav-link" href="/">
-            Dashboard
-          </Link>
-        </div>
-        <div className="w-[42px] h-[21px] left-[276px] top-[21px] absolute text-black text-base leading-snug">
-          <Link className="nav-link" href="/gifts">
-            Gifts
-          </Link>
-        </div>
-        <div className="w-[83px] h-[21px] left-[409px] top-[19px] absolute text-black text-base leading-snug">
-          <Link className="nav-link" href="/people">
-            People
-          </Link>
-        </div>
-        <div className="w-[84px] h-[21px] left-[560px] top-[19px] absolute text-black text-base leading-snug">
-          <Link className="nav-link" href="/gift-ideas">
-            Gift Ideas
-          </Link>
-        </div>
-        <div data-svg-wrapper className="left-[519.88px] top-[18.62px] absolute">
-          <svg width="28" height="24" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M2.1875 0.625C1.46016 0.625 0.875 1.21016 0.875 1.9375V4.5625C0.875 5.28984 1.46016 5.875 2.1875 5.875H4.8125C5.53984 5.875 6.125 5.28984 6.125 4.5625V1.9375C6.125 1.21016 5.53984 0.625 4.8125 0.625H2.1875ZM10.5 1.5C9.53203 1.5 8.75 2.28203 8.75 3.25C8.75 4.21797 9.53203 5 10.5 5H26.25C27.218 5 28 4.21797 28 3.25C28 2.28203 27.218 1.5 26.25 1.5H10.5ZM10.5 10.25C9.53203 10.25 8.75 11.032 8.75 12C8.75 12.968 9.53203 13.75 10.5 13.75H26.25C27.218 13.75 28 12.968 28 12C28 11.032 27.218 10.25 26.25 10.25H10.5ZM10.5 19C9.53203 19 8.75 19.782 8.75 20.75C8.75 21.718 9.53203 22.5 10.5 22.5H26.25C27.218 22.5 28 21.718 28 20.75C28 19.782 27.218 19 26.25 19H10.5ZM0.875 10.6875V13.3125C0.875 14.0398 1.46016 14.625 2.1875 14.625H4.8125C5.53984 14.625 6.125 14.0398 6.125 13.3125V10.6875C6.125 9.96016 5.53984 9.375 4.8125 9.375H2.1875C1.46016 9.375 0.875 9.96016 0.875 10.6875ZM2.1875 18.125C1.46016 18.125 0.875 18.7102 0.875 19.4375V22.0625C0.875 22.7898 1.46016 23.375 2.1875 23.375H4.8125C5.53984 23.375 6.125 22.7898 6.125 22.0625V19.4375C6.125 18.7102 5.53984 18.125 4.8125 18.125H2.1875Z"
-              fill="black"
-            />
-          </svg>
-        </div>
-        {/* <div className="w-[669px] h-[46px] left-0 top-[59px] absolute bg-[#fdf5f5] rounded-bl-[17px] rounded-br-[17px] border border-[#7fa087]" /> */}
-        {/* <div className="w-[152px] h-[37px] left-[15px] top-[68px] absolute text-black text-base">Search...</div> */}
       </div>
-      <Button variant="danger" type="button" size="lg" className="copy-btn" onClick={signOut}>
-        Sign Out
-      </Button>
-    </div>
+      <div className="absolute top-4 right-4 mt-1">
+        <button type="button" className="px-4 py-2 text-lg bg-[#7fa087] hover:bg-[#6b8872] text-black rounded" onClick={signOut}>
+          Sign Out
+        </button>
+      </div>
+    </>
   );
 }
