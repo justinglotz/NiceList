@@ -4,22 +4,30 @@
 
 import { useAuth } from '@/utils/context/authContext';
 import DashboardCard from '@/components/cards/DashboardCard';
+import { useEffect, useState } from 'react';
+import { getPeople } from '../api/personData';
 
 function Home() {
   const { user } = useAuth();
+  const [people, setPeople] = useState([]);
+
+  useEffect(() => {
+    getPeople(user.uid).then(setPeople);
+  }, []);
+
+  console.log(people);
 
   return (
     <div
-      className="text-center d-flex flex-column justify-content-center align-content-center"
+      className="text-center d-flex flex-row justify-content-center align-content-center gap-4"
       style={{
         padding: '30px',
         margin: '0 auto',
       }}
     >
-      <h1>Hello {user.displayName}! </h1>
-      <p>Create a Person for each person on your list</p>
-      <p>Then create gifts and assign them to people</p>
-      <DashboardCard />
+      {people.map((personObj) => (
+        <DashboardCard key={personObj.personId} personObj={personObj} />
+      ))}
     </div>
   );
 }

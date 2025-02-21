@@ -78,4 +78,24 @@ const getSingleGift = (giftId) =>
       .catch(reject);
   });
 
-export { createGift, updateGift, getGifts, deleteGift, getSingleGift };
+// GET ALL GIFTS FOR A PERSON
+const getGiftsByPersonId = (personId) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/gifts.json?orderBy="personId"&equalTo="${personId}"`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data) {
+          resolve(Object.values(data));
+        } else {
+          resolve([]);
+        }
+      })
+      .catch(reject);
+  });
+
+export { createGift, updateGift, getGifts, deleteGift, getSingleGift, getGiftsByPersonId };
