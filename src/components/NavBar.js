@@ -16,7 +16,7 @@ export default function NavBar() {
       <div className="absolute">
         <div className={`w-[331px] h-[105px] bg-[#7fa087] rounded-[17px] relative left-4 ${quicksand.className}`}>
           <div className="p-2">
-            <div className="text-black text-xl font-normal">{user.displayName}`&apos;`s</div>
+            <div className="text-black text-xl font-normal">{user.displayName}&apos;s</div>
             <div className="text-black text-7xl font-bold leading-none">NiceList</div>
           </div>
           <div className="absolute bottom-2 right-2">
