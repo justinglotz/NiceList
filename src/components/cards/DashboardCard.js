@@ -10,9 +10,11 @@ export default function DashboardCard({ personObj }) {
   const [gifts, setGifts] = useState([]);
 
   useEffect(() => {
+    console.log(personObj.personId);
     getGiftsByPersonId(personObj.personId).then(setGifts);
-    console.log(gifts);
   }, []);
+
+  console.log('Gifts:', gifts);
 
   return (
     <div>
@@ -22,12 +24,19 @@ export default function DashboardCard({ personObj }) {
             <p className="text-white text-[18px] pt-[22px] px-[22px]">{personObj.name}</p>
           </div>
           <div className="w-[125px] flex items-center justify-center">
-            <ProgressRing progress={95} />
+            <ProgressRing progress={20} />
           </div>
         </div>
         <div className="flex flex-col justify-center items-center gap-2">
-          <GiftMiniCard />
-          <GiftMiniCard />
+          {gifts.length > 2 ? (
+            <>
+              <GiftMiniCard key={gifts[0].giftId} giftObj={gifts[0]} />
+              <GiftMiniCard key={gifts[1].giftId} giftObj={gifts[1]} />
+            </>
+          ) : (
+            gifts.map((gift) => <GiftMiniCard key={gift.giftId} giftObj={gift} />)
+          )}
+          ;
         </div>
       </div>
     </div>
