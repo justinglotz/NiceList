@@ -17,7 +17,7 @@ export default function PeoplePage() {
 
   useEffect(() => {
     getAllThePeople();
-  }, []);
+  });
 
   return (
     <div>
@@ -26,10 +26,12 @@ export default function PeoplePage() {
           <Button>New Person</Button>
         </Link>
       </div>
-      <div className="flex flex-row gap-3 m-2">
-        {people.map((person) => (
-          <PersonCard key={person.personId} personObj={person} onUpdate={getAllThePeople} />
-        ))}
+      <div className="mx-auto w-4/5">
+        <div className="flex flex-row flex-wrap justify-start gap-3 m-2">
+          {people.map((person) => (
+            <PersonCard key={person.personId} personObj={person} onUpdate={getAllThePeople} />
+          ))}
+        </div>
       </div>
     </div>
   );

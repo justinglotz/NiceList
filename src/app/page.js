@@ -13,21 +13,17 @@ function Home() {
 
   useEffect(() => {
     getPeople(user.uid).then(setPeople);
-  }, []);
+  }, [user.uid]);
 
   console.log(people);
 
   return (
-    <div
-      className="text-center d-flex flex-row justify-content-center align-content-center gap-4"
-      style={{
-        padding: '30px',
-        margin: '0 auto',
-      }}
-    >
-      {people.map((personObj) => (
-        <DashboardCard key={personObj.personId} personObj={personObj} />
-      ))}
+    <div className="mx-auto w-full">
+      <div className="flex flex-row flex-wrap justify-start gap-4 p-8 ">
+        {people.map((personObj) => (
+          <DashboardCard key={personObj.personId} personObj={personObj} />
+        ))}
+      </div>
     </div>
   );
 }
