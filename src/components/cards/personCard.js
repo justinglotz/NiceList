@@ -14,7 +14,7 @@ export default function PersonCard({ personObj, onUpdate }) {
   };
   return (
     <div>
-      <Card style={{ width: '18rem' }}>
+      <Card className="w-[300px]">
         <Card.Body>
           <Card.Title>{personObj.name}</Card.Title>
           <Card.Subtitle className="mb-2 text-muted">{personObj.address}</Card.Subtitle>

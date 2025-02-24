@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import ProgressRing from '../ProgressRing';
 import GiftMiniCard from '../GiftMiniCard';
@@ -8,13 +8,37 @@ import { getGiftsByPersonId } from '../../api/giftData';
 
 export default function DashboardCard({ personObj }) {
   const [gifts, setGifts] = useState([]);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     console.log(personObj.personId);
     getGiftsByPersonId(personObj.personId).then(setGifts);
+  });
+
+  const calculateProgress = useCallback((giftItems) => {
+    if (!giftItems || giftItems.length === 0) return 0;
+
+    let statusSum = 0;
+    giftItems.forEach((gift) => {
+      statusSum += gift.status;
+    });
+
+    return ((statusSum / (giftItems.length * 4)) * 100).toFixed(0);
   }, []);
 
-  console.log('Gifts:', gifts);
+  useEffect(() => {
+    const fetchGifts = async () => {
+      const fetchedGifts = await getGiftsByPersonId(personObj.personId);
+      setGifts(fetchedGifts);
+      setProgress(calculateProgress(fetchedGifts));
+    };
+
+    fetchGifts();
+  }, [personObj.personId, calculateProgress]);
+
+  useEffect(() => {
+    setProgress(calculateProgress(gifts));
+  }, [gifts, calculateProgress]);
 
   return (
     <div>
@@ -24,7 +48,7 @@ export default function DashboardCard({ personObj }) {
             <p className="text-white text-[18px] pt-[22px] px-[22px]">{personObj.name}</p>
           </div>
           <div className="w-[125px] flex items-center justify-center">
-            <ProgressRing progress={20} />
+            <ProgressRing progress={progress} />
           </div>
         </div>
         <div className="flex flex-col justify-center items-center gap-2">
@@ -36,7 +60,6 @@ export default function DashboardCard({ personObj }) {
           ) : (
             gifts.map((gift) => <GiftMiniCard key={gift.giftId} giftObj={gift} />)
           )}
-          ;
         </div>
       </div>
     </div>

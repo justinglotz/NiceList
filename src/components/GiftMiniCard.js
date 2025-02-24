@@ -5,7 +5,7 @@ export default function GiftMiniCard({ giftObj }) {
   return (
     <div className="h-[50px] w-[285px]">
       <div className="h-[25px] bg-[#E6DADA] rounded-t-[6px]">
-        <p>{giftObj.name}</p>
+        <p className="mx-1">{giftObj.name}</p>
       </div>
       <div className="h-[25px] bg-[#C25B5D] rounded-b-[6px] flex flex-row divide-x divide-solid divide-black">
         <div className="flex h-full w-1/4 justify-center">
