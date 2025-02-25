@@ -1,11 +1,16 @@
-import { Poppins } from 'next/font/google';
+import { Poppins, Quicksand } from 'next/font/google';
 import PropTypes from 'prop-types';
 import ClientProvider from '@/utils/context/ClientProvider';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@/styles/globals.css';
 
-const poppins = Poppins({ subsets: ['latin'], weight: ['400', '700'] });
+const poppins = Poppins({ subsets: ['latin'], weight: ['100', '200', '400', '700', '800', '900'] });
+export const quicksand = Quicksand({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['variable'],
+});
 export default function RootLayout({ children }) {
   return (
     <html lang="en">

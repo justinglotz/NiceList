@@ -33,7 +33,7 @@ export default function GiftForm({ obj = initialState }) {
       const payload = { ...formInput, uid: user.uid };
       updateGift(payload).then(() => router.push(`/gifts`));
     } else {
-      const payload = { ...formInput, uid: user.uid };
+      const payload = { ...formInput, uid: user.uid, status: 1 };
       createGift(payload).then(({ name }) => {
         const patchPayload = { giftId: name };
         updateGift(patchPayload).then(() => {

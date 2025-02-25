@@ -11,9 +11,17 @@ export default function DashboardCard({ personObj }) {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    console.log(personObj.personId);
-    getGiftsByPersonId(personObj.personId).then(setGifts);
-  });
+    const fetchGifts = async () => {
+      const fetchedGifts = await getGiftsByPersonId(personObj.personId);
+
+      // Only update state if data is different
+      if (JSON.stringify(fetchedGifts) !== JSON.stringify(gifts)) {
+        setGifts(fetchedGifts);
+      }
+    };
+
+    fetchGifts();
+  }, [personObj.personId, gifts]);
 
   const calculateProgress = useCallback((giftItems) => {
     if (!giftItems || giftItems.length === 0) return 0;

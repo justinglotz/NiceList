@@ -98,4 +98,24 @@ const getGiftsByPersonId = (personId) =>
       .catch(reject);
   });
 
-export { createGift, updateGift, getGifts, deleteGift, getSingleGift, getGiftsByPersonId };
+// GET ALL COMPLETED GIFTS
+const getCompletedGifts = () =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/gifts.json?orderBy="status"&equalTo=4`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data) {
+          resolve(Object.values(data));
+        } else {
+          resolve([]);
+        }
+      })
+      .catch(reject);
+  });
+
+export { createGift, updateGift, getGifts, deleteGift, getSingleGift, getGiftsByPersonId, getCompletedGifts };
