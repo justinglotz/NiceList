@@ -6,7 +6,7 @@ import ProgressRing from '../ProgressRing';
 import GiftMiniCard from '../GiftMiniCard';
 import { getGiftsByPersonId } from '../../api/giftData';
 
-export default function DashboardCard({ personObj, onGiftUpdate }) {
+export default function DashboardCard({ personObj, onGiftUpdate, hideCompleted }) {
   const [gifts, setGifts] = useState([]);
   const [progress, setProgress] = useState(0);
 
@@ -49,13 +49,15 @@ export default function DashboardCard({ personObj, onGiftUpdate }) {
   }, [gifts, calculateProgress]);
 
   const handleGiftUpdate = (updatedGift) => {
-    setGifts((prevGifts) => prevGifts.map((gift) => {
+    setGifts((prevGifts) =>
+      prevGifts.map((gift) => {
         if (gift.giftId === updatedGift.giftId) {
           onGiftUpdate(updatedGift);
           return updatedGift; // Update the matching gift
         }
         return gift; // Return other gifts unchanged
-      }));
+      }),
+    );
   };
 
   return (
@@ -70,14 +72,11 @@ export default function DashboardCard({ personObj, onGiftUpdate }) {
           </div>
         </div>
         <div className="flex flex-col justify-center items-center gap-2">
-          {gifts.length > 2 ? (
-            <>
-              <GiftMiniCard key={gifts[0].giftId} giftObj={gifts[0]} onGiftUpdate={handleGiftUpdate} />
-              <GiftMiniCard key={gifts[1].giftId} giftObj={gifts[1]} onGiftUpdate={handleGiftUpdate} />
-            </>
-          ) : (
-            gifts.map((gift) => <GiftMiniCard key={gift.giftId} giftObj={gift} onGiftUpdate={handleGiftUpdate} />)
-          )}
+          {gifts.map((gift) => (
+            <div key={gift.giftId} className={`transition-all duration-300 ease-in-out ${hideCompleted && gift.status === 4 ? 'opacity-0 scale-0 h-0 overflow-hidden' : 'opacity-100 scale-100 h-auto'}`}>
+              <GiftMiniCard giftObj={gift} onGiftUpdate={handleGiftUpdate} />
+            </div>
+          ))}
         </div>
       </div>
     </div>
@@ -92,4 +91,5 @@ DashboardCard.propTypes = {
     address: PropTypes.string.isRequired,
   }),
   onGiftUpdate: PropTypes.func,
+  hideCompleted: PropTypes.bool,
 };
