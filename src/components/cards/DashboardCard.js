@@ -6,7 +6,7 @@ import ProgressRing from '../ProgressRing';
 import GiftMiniCard from '../GiftMiniCard';
 import { getGiftsByPersonId } from '../../api/giftData';
 
-export default function DashboardCard({ personObj }) {
+export default function DashboardCard({ personObj, onGiftUpdate }) {
   const [gifts, setGifts] = useState([]);
   const [progress, setProgress] = useState(0);
 
@@ -21,7 +21,7 @@ export default function DashboardCard({ personObj }) {
     };
 
     fetchGifts();
-  }, [personObj.personId, gifts]);
+  }, [personObj.personId]);
 
   const calculateProgress = useCallback((giftItems) => {
     if (!giftItems || giftItems.length === 0) return 0;
@@ -48,6 +48,16 @@ export default function DashboardCard({ personObj }) {
     setProgress(calculateProgress(gifts));
   }, [gifts, calculateProgress]);
 
+  const handleGiftUpdate = (updatedGift) => {
+    setGifts((prevGifts) => prevGifts.map((gift) => {
+        if (gift.giftId === updatedGift.giftId) {
+          onGiftUpdate(updatedGift);
+          return updatedGift; // Update the matching gift
+        }
+        return gift; // Return other gifts unchanged
+      }));
+  };
+
   return (
     <div>
       <div className="h-[300px] w-[300px] bg-[#1e1e1e] rounded-[12px] border-red-500">
@@ -62,11 +72,11 @@ export default function DashboardCard({ personObj }) {
         <div className="flex flex-col justify-center items-center gap-2">
           {gifts.length > 2 ? (
             <>
-              <GiftMiniCard key={gifts[0].giftId} giftObj={gifts[0]} />
-              <GiftMiniCard key={gifts[1].giftId} giftObj={gifts[1]} />
+              <GiftMiniCard key={gifts[0].giftId} giftObj={gifts[0]} onGiftUpdate={handleGiftUpdate} />
+              <GiftMiniCard key={gifts[1].giftId} giftObj={gifts[1]} onGiftUpdate={handleGiftUpdate} />
             </>
           ) : (
-            gifts.map((gift) => <GiftMiniCard key={gift.giftId} giftObj={gift} />)
+            gifts.map((gift) => <GiftMiniCard key={gift.giftId} giftObj={gift} onGiftUpdate={handleGiftUpdate} />)
           )}
         </div>
       </div>
@@ -81,4 +91,5 @@ DashboardCard.propTypes = {
     uid: PropTypes.string.isRequired,
     address: PropTypes.string.isRequired,
   }),
+  onGiftUpdate: PropTypes.func,
 };
