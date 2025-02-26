@@ -72,6 +72,7 @@ export default function GiftMiniCard({ giftObj, onGiftUpdate }) {
         const updatedGift = await updateGift({
           ...currentGiftObj,
           status: 4,
+          completed: true,
         });
         setCurrentGiftObj(updatedGift); // Update local state immediately
         if (onGiftUpdate) {
@@ -85,11 +86,11 @@ export default function GiftMiniCard({ giftObj, onGiftUpdate }) {
   };
 
   return (
-    <div className="h-[50px] w-[285px]">
-      <div className="h-[25px] bg-[#E6DADA] rounded-t-[6px]">
+    <div className="h-[50px] w-[285px] overflow-hidden rounded-[6px]">
+      <div className="h-[25px] bg-[#E6DADA]">
         <p className="mx-1">{giftObj.name}</p>
       </div>
-      <div className="h-[25px] bg-[#C25B5D] rounded-b-[6px] flex flex-row divide-x divide-solid divide-black">
+      <div className="h-[25px] bg-[#C25B5D] flex flex-row divide-x divide-solid divide-black">
         <div className={status1Style}>
           <button type="button" onClick={handleClick1}>
             <p className="text-white text-[12px] my-1">Selected</p>

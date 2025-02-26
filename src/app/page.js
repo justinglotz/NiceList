@@ -7,14 +7,13 @@ import { getPeople } from '../api/personData';
 import { getGifts } from '../api/giftData';
 import CustomProgressBar from '../components/CustomProgressBar';
 
-export const Context = React.createContext();
-
 function Home() {
   const { user } = useAuth();
   const [people, setPeople] = useState([]);
   const [gifts, setGifts] = useState([]);
   const [progress, setProgress] = useState(0);
   const [completedGifts, setCompletedGifts] = useState(0);
+  const [hideCompleted, setHideCompleted] = useState(false);
 
   useEffect(() => {
     getPeople(user.uid).then(setPeople);
@@ -24,7 +23,7 @@ function Home() {
   useEffect(() => {
     if (gifts && gifts.length > 0) {
       let giftProgressSum = 0;
-      let countCompletedGifts = 0; // Local variable inside useEffect
+      let countCompletedGifts = 0;
 
       gifts.forEach((gift) => {
         giftProgressSum += gift.status || 0;
@@ -46,8 +45,11 @@ function Home() {
     setGifts((prevGifts) => prevGifts.map((gift) => (gift.giftId === updatedGift.giftId ? updatedGift : gift)));
   };
 
+  const handleCheckboxChange = (e) => {
+    setHideCompleted(e.target.checked);
+  };
+
   if (!gifts) {
-    // Check if gifts data is not yet loaded
     return <div>Loading...</div>; // Or a loading spinner
   }
 
@@ -67,13 +69,13 @@ function Home() {
         </div>
         <div className="h-[20px] mt-[10px] mb-[15px] ml-auto">
           <h6 className="text-center font-semibold">
-            <input type="checkbox" className="inline" /> Hide Completed
+            <input type="checkbox" className="inline" onChange={handleCheckboxChange} checked={hideCompleted} /> Hide Completed
           </h6>
         </div>
       </div>
       <div className="flex flex-row flex-wrap justify-start gap-4 px-8">
         {people.map((personObj) => (
-          <DashboardCard key={personObj.personId} personObj={personObj} onGiftUpdate={handleGiftUpdateInParent} />
+          <DashboardCard key={personObj.personId} personObj={personObj} onGiftUpdate={handleGiftUpdateInParent} hideCompleted={hideCompleted} />
         ))}
       </div>
     </div>
