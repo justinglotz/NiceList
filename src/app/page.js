@@ -2,10 +2,12 @@
 
 import { useAuth } from '@/utils/context/authContext';
 import DashboardCard from '@/components/cards/DashboardCard';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getPeople } from '../api/personData';
 import { getGifts } from '../api/giftData';
 import CustomProgressBar from '../components/CustomProgressBar';
+
+export const Context = React.createContext();
 
 function Home() {
   const { user } = useAuth();
@@ -40,6 +42,10 @@ function Home() {
     }
   }, [gifts]);
 
+  const handleGiftUpdateInParent = (updatedGift) => {
+    setGifts((prevGifts) => prevGifts.map((gift) => (gift.giftId === updatedGift.giftId ? updatedGift : gift)));
+  };
+
   if (!gifts) {
     // Check if gifts data is not yet loaded
     return <div>Loading...</div>; // Or a loading spinner
@@ -67,7 +73,7 @@ function Home() {
       </div>
       <div className="flex flex-row flex-wrap justify-start gap-4 px-8">
         {people.map((personObj) => (
-          <DashboardCard key={personObj.personId} personObj={personObj} />
+          <DashboardCard key={personObj.personId} personObj={personObj} onGiftUpdate={handleGiftUpdateInParent} />
         ))}
       </div>
     </div>

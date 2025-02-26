@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignal, faGift, faUsers, faListUl, faMagnifyingGlass, faTree } from '@fortawesome/free-solid-svg-icons';
+import { faSignal, faGift, faUsers, faListUl, faMagnifyingGlass, faScroll } from '@fortawesome/free-solid-svg-icons';
 import { Quicksand } from 'next/font/google';
 import { signOut } from '../utils/auth';
 import { useAuth } from '../utils/context/authContext';
@@ -20,7 +20,7 @@ export default function NavBar() {
             <div className="text-black text-7xl font-bold leading-none">NiceList</div>
           </div>
           <div className="absolute bottom-2 right-2">
-            <FontAwesomeIcon icon={faTree} size="2xl" className="text-black" />
+            <FontAwesomeIcon icon={faScroll} size="2xl" className="text-black" />
           </div>
         </div>
       </div>

@@ -20,7 +20,7 @@ export default function ProgressRing({ progress }) {
         <circle cx="60" cy="60" r={radius} stroke="#e5e7eb" strokeWidth={strokeWidth} fill="none" />
         {/* Foreground circle (progress ring) */}
         <circle
-          className="gradient-to-b from-[#bf5bfe] to-[#592b76]"
+          className="transition-all duration-500 ease-out"
           cx="60"
           cy="60"
           r={radius}

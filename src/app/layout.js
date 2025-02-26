@@ -6,11 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '@/styles/globals.css';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['100', '200', '400', '700', '800', '900'] });
-export const quicksand = Quicksand({
-  subsets: ['latin'],
-  display: 'swap',
-  weight: ['variable'],
-});
+export const quicksand = Quicksand({ subsets: ['latin'], display: 'swap', weight: ['variable'] });
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -21,9 +17,7 @@ export default function RootLayout({ children }) {
   );
 }
 
-RootLayout.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+RootLayout.propTypes = { children: PropTypes.node.isRequired };
 
 // You can manage the metadata, tab content and info about your app dynamically using this. It will work on every page in your app:
 export const generateMetadata = async ({ params }) => {
@@ -36,10 +30,6 @@ export const generateMetadata = async ({ params }) => {
     // Add other metadata fields as needed, like keywords, open graph tags, etc.
     icons: '/favicon.svg',
     keywords: [`${slug}`, 'dynamic', 'page'],
-    openGraph: {
-      title: `Open Graph Title for ${slug}`,
-      description: `Open Graph Description for ${slug}`,
-      url: `https://yourwebsite.com/${slug}`,
-    },
+    openGraph: { title: `Open Graph Title for ${slug}`, description: `Open Graph Description for ${slug}`, url: `https://yourwebsite.com/${slug}` },
   };
 };
