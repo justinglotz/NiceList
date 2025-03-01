@@ -5,11 +5,13 @@ import { faSignal, faGift, faUsers, faListUl, faMagnifyingGlass, faScroll } from
 import { Quicksand } from 'next/font/google';
 import { signOut } from '../utils/auth';
 import { useAuth } from '../utils/context/authContext';
+import { useSearch } from '../utils/context/searchContext';
 
 const quicksand = Quicksand({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'] });
 
 export default function NavBar() {
   const { user } = useAuth();
+  const { searchQuery, setSearchQuery } = useSearch();
   console.log(user);
   return (
     <>
@@ -65,7 +67,7 @@ export default function NavBar() {
             {/* Search Bar */}
             <div className="flex items-center bg-[#FDF6F6] h-[45px] rounded-b-[17px] border border-[#7fa087] p-3">
               <FontAwesomeIcon icon={faMagnifyingGlass} className="text-gray-400 mr-3" />
-              <input type="text" placeholder="Search..." className="bg-transparent border-none outline-none text-black w-full" />
+              <input type="text" placeholder="Search..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="bg-transparent border-none outline-none text-black w-full" />
             </div>
           </nav>
         </div>

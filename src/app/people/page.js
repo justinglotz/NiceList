@@ -17,7 +17,8 @@ export default function PeoplePage() {
 
   useEffect(() => {
     getAllThePeople();
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user.uid]);
 
   return (
     <div>
