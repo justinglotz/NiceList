@@ -5,10 +5,12 @@ import PropTypes from 'prop-types';
 import ProgressRing from '../ProgressRing';
 import GiftMiniCard from '../GiftMiniCard';
 import { getGiftsByPersonId } from '../../api/giftData';
+import { useSearch } from '../../utils/context/searchContext';
 
 export default function DashboardCard({ personObj, onGiftUpdate, hideCompleted }) {
   const [gifts, setGifts] = useState([]);
   const [progress, setProgress] = useState(0);
+  const { searchQuery } = useSearch();
 
   useEffect(() => {
     const fetchGifts = async () => {
@@ -21,6 +23,7 @@ export default function DashboardCard({ personObj, onGiftUpdate, hideCompleted }
     };
 
     fetchGifts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [personObj.personId]);
 
   const calculateProgress = useCallback((giftItems) => {
@@ -65,7 +68,8 @@ export default function DashboardCard({ personObj, onGiftUpdate, hideCompleted }
       <div className="h-[300px] w-[300px] bg-[#1e1e1e] rounded-[12px] border-red-500">
         <div className="flex flex-row h-[136px] w-full">
           <div className="w-[175px] flex items-start">
-            <p className="text-white text-[18px] pt-[22px] px-[22px]">{personObj.name}</p>
+            <p className={` text-[18px] pt-[22px] px-[22px] ${  searchQuery.length > 0 && personObj.name.toLowerCase().includes(searchQuery.toLowerCase()) ? 'text-amber-300' : 'text-white'}`}>{personObj.name}</p>
+            {/* personObj.name.toLowerCase().includes(searchQuery.toLowerCase()) && personObj.name */}
           </div>
           <div className="w-[125px] flex items-center justify-center">
             <ProgressRing progress={progress} />
@@ -74,7 +78,7 @@ export default function DashboardCard({ personObj, onGiftUpdate, hideCompleted }
         <div className="flex flex-col justify-center items-center gap-2">
           {gifts.map((gift) => (
             <div key={gift.giftId} className={`transition-all duration-300 ease-in-out ${hideCompleted && gift.status === 4 ? 'opacity-0 scale-0 h-0 overflow-hidden' : 'opacity-100 scale-100 h-auto'}`}>
-              <GiftMiniCard giftObj={gift} onGiftUpdate={handleGiftUpdate} />
+              {gift.name.toLowerCase().includes(searchQuery.toLowerCase()) && <GiftMiniCard giftObj={gift} onGiftUpdate={handleGiftUpdate} />}
             </div>
           ))}
         </div>
