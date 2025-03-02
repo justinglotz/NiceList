@@ -5,11 +5,23 @@ import ClientProvider from '@/utils/context/ClientProvider';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@/styles/globals.css';
 
-const poppins = Poppins({ subsets: ['latin'], weight: ['100', '200', '400', '700', '800', '900'] });
-export const quicksand = Quicksand({ subsets: ['latin'], display: 'swap', weight: ['variable'] });
+// Define the fonts with variable properties
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['100', '200', '400', '700', '800', '900'],
+  variable: '--font-poppins',
+});
+
+const quicksand = Quicksand({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['300', '400', '500', '600', '700'], // Include 700 for bold
+  variable: '--font-quicksand',
+});
+
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${poppins.variable} ${quicksand.variable}`}>
       <body className={poppins.className}>
         <ClientProvider>{children}</ClientProvider>
       </body>

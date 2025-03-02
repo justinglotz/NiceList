@@ -15,6 +15,7 @@ export default function GiftsPage() {
     getGifts(user.uid).then(setGifts);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     getAllTheGifts();
   }, []);
@@ -25,7 +26,7 @@ export default function GiftsPage() {
           <Button>New Gift</Button>
         </Link>
       </div>
-      <div className="flex flex-row gap-3 m-2">
+      <div className="flex flex-row flex-wrap justify-center gap-4 px-8 mb-4">
         {gifts.map((gift) => (
           <GiftCard key={gift.giftId} giftObj={gift} onUpdate={getAllTheGifts} />
         ))}

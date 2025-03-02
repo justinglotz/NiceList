@@ -2,12 +2,9 @@ import React from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignal, faGift, faUsers, faListUl, faMagnifyingGlass, faScroll } from '@fortawesome/free-solid-svg-icons';
-import { Quicksand } from 'next/font/google';
 import { signOut } from '../utils/auth';
 import { useAuth } from '../utils/context/authContext';
 import { useSearch } from '../utils/context/searchContext';
-
-const quicksand = Quicksand({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'] });
 
 export default function NavBar() {
   const { user } = useAuth();
@@ -16,7 +13,7 @@ export default function NavBar() {
   return (
     <>
       <div className="absolute">
-        <div className={`w-[331px] h-[105px] bg-[#7fa087] rounded-[17px] relative left-4 ${quicksand.className}`}>
+        <div className="w-[331px] h-[105px] bg-[#7fa087] rounded-[17px] relative left-4 font-quicksand">
           <div className="p-2">
             <div className="text-black text-xl font-normal">{user.displayName}&apos;s</div>
             <div className="text-black text-7xl font-bold leading-none">NiceList</div>
