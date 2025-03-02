@@ -56,24 +56,24 @@ function Home() {
   return (
     <div className="mx-auto w-full">
       <div className="h-[30px] mt-[15px] mb-[5px]">
-        <h3 className="text-center font-semibold">Overall Progress</h3>
+        <h3 className="text-center font-quicksand">Overall Progress</h3>
       </div>
       <div className="h-[23px] w-4/5 mx-auto mb-0">
         <CustomProgressBar value={progress} />
       </div>
       <div className="flex flex-row w-4/5 mx-auto relative">
         <div className="h-[20px] mt-[10px] mb-[15px]" style={{ marginLeft: 'calc(50% - 75px)' }}>
-          <h6 className="text-center font-semibold">
+          <h6 className="text-center font-semibold font-quicksand">
             {completedGifts}/{gifts.length} Gifts Completed
           </h6>
         </div>
         <div className="h-[20px] mt-[10px] mb-[15px] ml-auto">
-          <h6 className="text-center font-semibold">
+          <h6 className="text-center font-semibold font-quicksand">
             <input type="checkbox" className="inline" onChange={handleCheckboxChange} checked={hideCompleted} /> Hide Completed
           </h6>
         </div>
       </div>
-      <div className="flex flex-row flex-wrap justify-start gap-4 px-8">
+      <div className="flex flex-row flex-wrap justify-center gap-4 px-8 mb-4">
         {people.map((personObj) => (
           <DashboardCard key={personObj.personId} personObj={personObj} onGiftUpdate={handleGiftUpdateInParent} hideCompleted={hideCompleted} />
         ))}

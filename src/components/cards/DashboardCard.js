@@ -10,6 +10,7 @@ import { useSearch } from '../../utils/context/searchContext';
 export default function DashboardCard({ personObj, onGiftUpdate, hideCompleted }) {
   const [gifts, setGifts] = useState([]);
   const [progress, setProgress] = useState(0);
+  const [expandedView, setExpandedView] = useState(false);
   const { searchQuery } = useSearch();
 
   useEffect(() => {
@@ -63,12 +64,17 @@ export default function DashboardCard({ personObj, onGiftUpdate, hideCompleted }
     );
   };
 
+  let cardHeight = 300;
+  if (gifts.length > 2 && expandedView) {
+    cardHeight += (gifts.length - 2) * 55;
+  }
+
   return (
     <div>
-      <div className="h-[300px] w-[300px] bg-[#1e1e1e] rounded-[12px] border-red-500">
+      <div className="w-[300px] bg-[#1e1e1e] rounded-[12px] border-red-500 transition-all transition-500" style={{ height: `${cardHeight}px` }}>
         <div className="flex flex-row h-[136px] w-full">
           <div className="w-[175px] flex items-start">
-            <p className={` text-[18px] pt-[22px] px-[22px] ${  searchQuery.length > 0 && personObj.name.toLowerCase().includes(searchQuery.toLowerCase()) ? 'text-amber-300' : 'text-white'}`}>{personObj.name}</p>
+            <p className={` text-[18px] pt-[22px] px-[22px] ${searchQuery.length > 0 && personObj.name.toLowerCase().includes(searchQuery.toLowerCase()) ? 'text-red-400' : 'text-white'}`}>{personObj.name}</p>
             {/* personObj.name.toLowerCase().includes(searchQuery.toLowerCase()) && personObj.name */}
           </div>
           <div className="w-[125px] flex items-center justify-center">
@@ -76,24 +82,29 @@ export default function DashboardCard({ personObj, onGiftUpdate, hideCompleted }
           </div>
         </div>
         <div className="flex flex-col justify-center items-center gap-2">
-          {gifts.map((gift) => (
-            <div key={gift.giftId} className={`transition-all duration-300 ease-in-out ${hideCompleted && gift.status === 4 ? 'opacity-0 scale-0 h-0 overflow-hidden' : 'opacity-100 scale-100 h-auto'}`}>
-              {gift.name.toLowerCase().includes(searchQuery.toLowerCase()) && <GiftMiniCard giftObj={gift} onGiftUpdate={handleGiftUpdate} />}
+          {expandedView
+            ? gifts.map((gift) => (
+                <div key={gift.giftId} className={`transition-all duration-300 ease-in-out ${hideCompleted && gift.status === 4 ? 'opacity-0 scale-0 h-0 overflow-hidden' : 'opacity-100 scale-100 h-auto'}`}>
+                  <GiftMiniCard giftObj={gift} onGiftUpdate={handleGiftUpdate} />
+                </div>
+              ))
+            : /* Show only the first two gifts when expanded view is false */
+              gifts.slice(0, 2).map((gift) => (
+                <div key={gift.giftId} className={`transition-all duration-300 ease-in-out ${hideCompleted && gift.status === 4 ? 'opacity-0 scale-0 h-0 overflow-hidden' : 'opacity-100 scale-100 h-auto'}`}>
+                  <GiftMiniCard giftObj={gift} onGiftUpdate={handleGiftUpdate} />
+                </div>
+              ))}
+          {gifts.length > 2 && (
+            <div className="w-full flex flex-col">
+              <button type="button" className="justify-end text-white text-sm" onClick={() => setExpandedView(!expandedView)}>
+                {expandedView ? 'See Less' : 'See More'}
+              </button>
             </div>
-          ))}
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-DashboardCard.propTypes = {
-  personObj: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    personId: PropTypes.string.isRequired,
-    uid: PropTypes.string.isRequired,
-    address: PropTypes.string.isRequired,
-  }),
-  onGiftUpdate: PropTypes.func,
-  hideCompleted: PropTypes.bool,
-};
+DashboardCard.propTypes = { personObj: PropTypes.shape({ name: PropTypes.string.isRequired, personId: PropTypes.string.isRequired, uid: PropTypes.string.isRequired, address: PropTypes.string.isRequired }), onGiftUpdate: PropTypes.func, hideCompleted: PropTypes.bool };

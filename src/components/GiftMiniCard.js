@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { updateGift } from '../api/giftData';
+import { useSearch } from '../utils/context/searchContext';
 
 export default function GiftMiniCard({ giftObj, onGiftUpdate }) {
   const [currentGiftObj, setCurrentGiftObj] = useState(giftObj);
+  const { searchQuery } = useSearch();
 
   useEffect(() => {
     setCurrentGiftObj(giftObj); // Update local state when giftObj prop changes
@@ -88,7 +90,7 @@ export default function GiftMiniCard({ giftObj, onGiftUpdate }) {
   return (
     <div className="h-[50px] w-[285px] overflow-hidden rounded-[6px]">
       <div className="h-[25px] bg-[#E6DADA]">
-        <p className="mx-1">{giftObj.name}</p>
+        <p className={`mx-1 ${searchQuery.length > 0 && giftObj.name.toLowerCase().includes(searchQuery.toLowerCase()) ? 'text-red-700' : 'text-black'}`}>{giftObj.name}</p>
       </div>
       <div className="h-[25px] bg-[#C25B5D] flex flex-row divide-x divide-solid divide-black">
         <div className={status1Style}>
