@@ -12,7 +12,7 @@ This app is designed for people who may struggle to remember where gifts are bei
 - **Gift Status**: Edit the status of a gift from the dashboard and see the gift status update in real time, including updating progress.
 
 ## Video Walkthrough of NiceList
-Coming soon!
+[Demo](https://www.loom.com/share/6ea39a7292ae43efb404861d7df09cf3?sid=e7c4965d-60d2-4231-abf2-569bc2bdeba8)
 
 
 ## Relevant Links
