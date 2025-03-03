@@ -1,61 +1,46 @@
-# NextJS with Firebase Auth App Router Template
+# NiceList
+NiceList is a Christmas Gift tracking solution for people who want all of their Christmas shopping in one centralized location. Users can view their entire progress at a glance, and see what gifts still need attention.
 
-[See Live Demo of this Template](https://drt-next-js-template-app-router.netlify.app/)
 
-## Topics
-- [Get Started](#get-started)
-- [Starting the Project](#starting-the-project)
-- [Deploying on Netlify](#deploying-on-netlify)
-___
-## Getting Started
-### Use Template
-#### 1. To get started, click the GREEN "Use this Template" button at the top of the repo
-<img width="915" alt="Screen Shot 2022-07-06 at 12 54 01 PM" src="https://user-images.githubusercontent.com/29741570/177612998-4aac9237-5a1e-4f13-8ae0-468587521564.png">
+## About the User 
+This app is designed for people who may struggle to remember where gifts are being shipped, who they are being shipped to, and what they still need to do to complete their Christmas shopping. NiceList helps the user keep all their information in one place, helping to streamline the process of Holiday shopping.
 
-#### 2. Make sure YOUR github account is selected in the dropdown and name your project
-<img width="763" alt="Screen Shot 2022-07-06 at 12 54 48 PM" src="https://user-images.githubusercontent.com/29741570/177613126-dd38f678-7553-4f27-8a4a-75680f14d71e.png">
+## Features 
+- **User Authentication**: Secure sign-in and sign-out using Firebase authentication.
+- **Dashboard**: Users can see overall progress for their Christmas shopping, progress per person, and the status of each gift, all in one centralized view.
+- **Gift and Person Management**: Create, read, update, and delete gifts and people with detailed information.
+- **Gift Status**: Edit the status of a gift from the dashboard and see the gift status update in real time, including updating progress.
 
-#### 3. Clone your new repo to your local machine
-#### 4. Go to the **NEXT** section
+## Video Walkthrough of NiceList
+Coming soon!
 
-## Starting the Project
-1. Create a Firebase project and set up authentication. Use [these videos](https://vimeo.com/showcase/codetracker-firebase) as a refresher if needed.
-1. Create a `.env` file at the root of the project
-1. Copy/Paste the contents of the `.env.sample` file to your newly created `.env` file.
-1. Copy over all of your Firebase values into the `.env` file.
-1. Open the `package.json` file and change the `name` property to the name of your application, and `author` to  your name.
-1. From your command line, be in the root directory and run `npm install` OR `npm i` for short.
-1. Next, run `npm run prepare`. This command sets up husky to track eslint errors on commit that will make your deploy fail on Netlify.
-1. Run `npx eslint . --ext .js,.jsx`
-1. To start your application, run `npm run dev`. THIS IS THE COMMAND YOU WILL USE TO RUN YOUR DEVELOPMENT SERVER FROM NOW ON.
-1. Open [http://localhost:3000](http://localhost:3000) with your browser.
 
-### If you see this, you are set to go!
-<img width="450" alt="Screen Shot 2022-07-06 at 1 07 27 PM" src="https://github.com/user-attachments/assets/deae25f0-01d5-44b4-be60-7297b0f6f0ef">
+## Relevant Links
+- [Wireframes](https://www.figma.com/design/hhZyWsgTNcsQhQkylmmG7r/NiceList?node-id=1-2&t=cLjjQZFBLdcTM9pd-1)
+- [Project Board](https://github.com/users/justinglotz/projects/7)
+- [ERD](https://dbdiagram.io/d/NiceList-67b203d9263d6cf9a053bb21)
+- [Deployed Site](https://nice-list-sigma.vercel.app/)
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Project Screenshots 
 
-**NOTES:** 
-- If you see the following error, you did not follow all the setup steps correctly and failed to add your Firebase creds. Go back and do that NOW.
 
-<img width="1043" alt="Screen Shot 2022-07-06 at 11 18 45 AM" src="https://user-images.githubusercontent.com/29741570/177612501-c2628f18-4bbd-4de9-aae6-27ffba1172d6.png">
+<img width="1512" alt="Screenshot 2025-03-03 at 7 35 39 AM" src="https://github.com/user-attachments/assets/e0080676-21ee-46e5-ad06-9a68a662d2cb" />
+<img width="1512" alt="Screenshot 2025-03-03 at 7 36 25 AM" src="https://github.com/user-attachments/assets/571a8b79-fa70-40ed-8933-0d7b26d724ff" />
+<img width="1512" alt="Screenshot 2025-03-03 at 7 36 34 AM" src="https://github.com/user-attachments/assets/fc1190dc-b297-4e04-9e74-6520d4658407" />
+<img width="1512" alt="Screenshot 2025-03-03 at 7 36 49 AM" src="https://github.com/user-attachments/assets/3c8f18bd-f297-4871-993c-e914b801a60e" />
+<img width="1512" alt="Screenshot 2025-03-03 at 7 37 00 AM" src="https://github.com/user-attachments/assets/477f5ebe-20eb-480e-a424-678656123144" />
+<img width="1512" alt="Screenshot 2025-03-03 at 7 37 19 AM" src="https://github.com/user-attachments/assets/bd952b26-432d-4419-9bb4-35c5bdae3779" />
+<img width="1274" alt="Screenshot 2025-03-03 at 7 37 26 AM" src="https://github.com/user-attachments/assets/93977b5d-f051-4e24-9d6f-30ef700cbaa3" />
 
-### Deploying on Netlify
-Netlify will automatically detect your project and prepopulate the settings, but should something go wrong and it does not, here are the commands:
 
-- Build Command: `npm run build`
-- Publish directory: `.next`
 
-#### Additional Steps to Take on Netlify
-- Add Environmental Variables
-    - Any Enviromental variables you are using in your `.env` file should be added to Netlify. 
-        - Go to Site settings > Build & deploy > Environment > Environment variables and the keys and values there if you did not add them when you were deploying your site
 
-- Update Firebase URL Settings
-    - In Firebase under Authentication select sign in methods, scroll to Authorized domains. Add your Netlify URL.
-        
-## Learn More about Next.js
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+
+
+
+
+
+## Contributors
+- [Justin Glotzbach](https://github.com/justinglotz)
