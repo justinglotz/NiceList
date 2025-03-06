@@ -1,14 +1,16 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import GiftIdeaForm from '../../components/forms/GiftIdeaForm';
 import GiftIdeaCard from '../../components/cards/GiftIdeaCard';
 import { useAuth } from '../../utils/context/authContext';
 import { getGiftIdeas } from '../../api/giftIdeaData';
+import { useSearch } from '../../utils/context/searchContext';
 
 export default function GiftIdeasPage() {
   const [giftIdeas, setGiftIdeas] = useState([]);
   const { user } = useAuth();
+  const { searchQuery } = useSearch();
 
   const fetchAndSortGiftIdeas = () => {
     getGiftIdeas(user.uid).then((ideas) => {
@@ -23,9 +25,6 @@ export default function GiftIdeasPage() {
   };
 
   const onGiftIdeaDelete = () => {
-    // setGiftIdeas((prev) =>
-    //   prev.filter(idea => idea.giftIdeaId !== deletedGiftIdeaId)
-    // );
     fetchAndSortGiftIdeas();
   };
 
@@ -36,11 +35,26 @@ export default function GiftIdeasPage() {
     }
   }, [user]);
 
+  // Filter gift ideas based on search query
+  const filteredGiftIdeas = useMemo(() => {
+    // Show all ideas if search query is empty or just 1 character
+    if (!searchQuery || searchQuery.length <= 1) {
+      return giftIdeas;
+    }
+
+    // Filter ideas that match the search query
+    return giftIdeas.filter((idea) => {
+      const searchLower = searchQuery.toLowerCase();
+      // Adjust these fields based on your gift idea structure
+      return idea.giftIdeaName?.toLowerCase().includes(searchLower) || idea.giftIdeaUrl?.toLowerCase().includes(searchLower);
+    });
+  }, [giftIdeas, searchQuery]);
+
   return (
     <>
       <GiftIdeaForm onOptimisticAdd={addOptimisticGiftIdea} onFinalRefresh={fetchAndSortGiftIdeas} />
       <div className="mt-4">
-        {giftIdeas.map((giftIdea) => (
+        {filteredGiftIdeas.map((giftIdea) => (
           <GiftIdeaCard key={giftIdea.giftIdeaId} giftIdea={giftIdea} onGiftIdeaDelete={() => onGiftIdeaDelete(giftIdea.giftIdeaId)} />
         ))}
       </div>
