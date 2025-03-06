@@ -56,7 +56,7 @@ export default function GiftMiniCard({ giftObj, onGiftUpdate }) {
       try {
         const updatedGift = await updateGift({
           ...currentGiftObj,
-          status: 3,
+          status: currentGiftObj.shipped === true ? 4 : 3,
         });
         setCurrentGiftObj(updatedGift); // Update local state immediately
         if (onGiftUpdate) {
