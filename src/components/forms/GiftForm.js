@@ -33,7 +33,18 @@ export default function GiftForm({ obj = initialState }) {
       const payload = { ...formInput, uid: user.uid };
       updateGift(payload).then(() => router.push(`/gifts`));
     } else {
-      const payload = { ...formInput, uid: user.uid, status: 1 };
+      // Find the selected person to get their shipped attribute
+      const selectedPerson = people.find((person) => person.personId === formInput.personId);
+      const shipped = selectedPerson?.shipped || false;
+
+      // Include the shipped attribute in the gift payload
+      const payload = {
+        ...formInput,
+        uid: user.uid,
+        status: 1,
+        shipped, // Add the shipped attribute from the person
+      };
+
       createGift(payload).then(({ name }) => {
         const patchPayload = { giftId: name };
         updateGift(patchPayload).then(() => {
