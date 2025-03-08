@@ -13,6 +13,11 @@ import { deleteGiftIdea } from '../../api/giftIdeaData';
 export default function GiftIdeaCard({ giftIdea, onGiftIdeaDelete }) {
   const { user } = useAuth();
   const [people, setPeople] = useState([]);
+
+  useEffect(() => {
+    getPeople(user.uid).then(setPeople);
+  }, [user.uid]);
+
   const handlePersonSelect = async (person) => {
     try {
       // Create gift process...
@@ -22,6 +27,7 @@ export default function GiftIdeaCard({ giftIdea, onGiftIdeaDelete }) {
         status: 1,
         uid: user.uid,
         url: giftIdea.giftIdeaUrl,
+        shipped: person.shipped,
       };
 
       await new Promise((resolve, reject) => {
@@ -46,10 +52,6 @@ export default function GiftIdeaCard({ giftIdea, onGiftIdeaDelete }) {
       console.error('Error processing gift idea:', error);
     }
   };
-
-  useEffect(() => {
-    getPeople(user.uid).then(setPeople);
-  }, [user.uid]);
 
   return (
     <div className="mb-2">

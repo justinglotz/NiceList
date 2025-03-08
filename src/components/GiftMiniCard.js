@@ -1,15 +1,34 @@
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import dayjs from 'dayjs';
 import { updateGift } from '../api/giftData';
 import { useSearch } from '../utils/context/searchContext';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import Calendar from './ui/calendar';
+import { useBudget } from '../utils/context/budgetContext';
+import { Badge } from './ui/badge';
+
+import { updateBudget, getBudget } from '../api/budgetData';
+import { useAuth } from '../utils/context/authContext';
 
 export default function GiftMiniCard({ giftObj, onGiftUpdate }) {
   const [currentGiftObj, setCurrentGiftObj] = useState(giftObj);
   const { searchQuery } = useSearch();
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [purchaseFormInput, setPurchaseFormInput] = useState('');
+  const [date, setDate] = React.useState(new Date());
+  const { budgetAmount, setBudgetAmount } = useBudget();
+  const { user } = useAuth();
 
   useEffect(() => {
     setCurrentGiftObj(giftObj); // Update local state when giftObj prop changes
   }, [giftObj]);
+
+  const handleChange = (e) => {
+    setPurchaseFormInput(e.target.value);
+  };
 
   // Adjusts style for each div based on status of the gift
   const status1Style = [1, 2, 3, 4].includes(giftObj.status) ? 'bg-[#4CAF50] flex h-full w-1/4 justify-center' : 'flex h-full w-1/4 justify-center';
@@ -34,23 +53,69 @@ export default function GiftMiniCard({ giftObj, onGiftUpdate }) {
       }
     }
   };
+
   const handleClick2 = async () => {
-    if (window.confirm(`Set status of ${currentGiftObj.name} to Purchased?`)) {
+    if (!giftObj.price || parseFloat(giftObj.price) <= 0) {
+      setDialogOpen(true);
+    } else if (window.confirm(`Set status of ${currentGiftObj.name} to Purchased?`)) {
+        try {
+          const updatedGift = await updateGift({
+            ...currentGiftObj,
+            status: 2,
+          });
+          setCurrentGiftObj(updatedGift); // Update local state immediately
+          if (onGiftUpdate) {
+            onGiftUpdate(updatedGift); // Notify the parent component
+          }
+        } catch (error) {
+          console.error('Error updating gift:', error);
+        }
+      }
+  };
+
+  const handlePurchaseSubmit = async (e) => {
+    e.preventDefault();
+    const budgetData = await getBudget(user.uid);
+    const currentBudget = budgetData[0];
+
+    // Convert string to number
+    const purchaseAmount = parseFloat(purchaseFormInput);
+    const newBudgetAmount = budgetAmount - purchaseAmount;
+
+    // Update local state
+    setBudgetAmount(newBudgetAmount);
+
+    console.log(currentBudget.budgetId);
+
+    // Create minimal payload with only what updateBudget needs
+    const payload = {
+      amount: newBudgetAmount,
+      budgetId: currentBudget.budgetId,
+    };
+
+    await updateBudget(payload);
+
+    // Need to get the id of this particular budget
+    if (purchaseFormInput) {
       try {
         const updatedGift = await updateGift({
           ...currentGiftObj,
           status: 2,
+          price: purchaseAmount,
+          date,
         });
-        setCurrentGiftObj(updatedGift); // Update local state immediately
+        setCurrentGiftObj(updatedGift);
         if (onGiftUpdate) {
-          onGiftUpdate(updatedGift); // Notify the parent component
+          onGiftUpdate(updatedGift);
         }
+        setPurchaseFormInput('');
+        setDialogOpen(false);
       } catch (error) {
         console.error('Error updating gift:', error);
-        // Handle error, e.g., display an error message
       }
     }
   };
+
   const handleClick3 = async () => {
     if (window.confirm(`Set status of ${currentGiftObj.name} to Arrived?`)) {
       try {
@@ -68,6 +133,7 @@ export default function GiftMiniCard({ giftObj, onGiftUpdate }) {
       }
     }
   };
+
   const handleClick4 = async () => {
     if (window.confirm(`Set status of ${currentGiftObj.name} to Complete?`)) {
       try {
@@ -87,34 +153,71 @@ export default function GiftMiniCard({ giftObj, onGiftUpdate }) {
     }
   };
 
+  const daysUntilArrival = dayjs(giftObj.date).startOf('day').diff(dayjs().startOf('day'), 'day');
+  const getArrivalDateBackgroundColor = () => {
+    if (daysUntilArrival > 10) return 'bg-[#4CAF50] text-white'; // Plenty of time (green)
+    if (daysUntilArrival > 3) return 'bg-[#FFA726] text-white'; // Getting closer (orange)
+    return 'bg-[#C25B5D] text-white'; // Very soon/past due (red)
+  };
+
   return (
-    <div className="h-[50px] w-[285px] overflow-hidden rounded-[6px]">
-      <div className="h-[25px] bg-[#E6DADA]">
-        <p className={`mx-1 ${searchQuery.length > 0 && giftObj.name.toLowerCase().includes(searchQuery.toLowerCase()) ? 'text-red-700' : 'text-black'}`}>{giftObj.name}</p>
+    <>
+      <div className="h-[50px] w-[285px] overflow-hidden rounded-[6px]">
+        <div className="h-[25px] bg-[#E6DADA] flex flex-row justify-between">
+          <p className={`mx-1 ${searchQuery.length > 0 && giftObj.name.toLowerCase().includes(searchQuery.toLowerCase()) ? 'text-red-700' : 'text-black'}`}>{giftObj.name}</p> <p className="mr-0.5">{giftObj.date && giftObj.status === 2 ? <Badge className={getArrivalDateBackgroundColor()}>Arrives in {daysUntilArrival} days</Badge> : ''}</p>
+        </div>
+        <div className="h-[25px] bg-[#C25B5D] flex flex-row divide-x divide-solid divide-black">
+          <div className={status1Style}>
+            <button type="button" onClick={handleClick1}>
+              <p className="text-white text-[12px] my-1">Selected</p>
+            </button>
+          </div>
+          <div className={status2Style}>
+            <button type="button" onClick={handleClick2}>
+              <p className="text-white text-[12px] my-1">Purchased</p>
+            </button>
+          </div>
+          <div className={status3Style}>
+            <button type="button" onClick={handleClick3}>
+              <p className="text-white text-[12px] my-1">Arrived</p>
+            </button>
+          </div>
+          <div className={status4Style}>
+            <button type="button" onClick={handleClick4}>
+              <p className="text-white text-[12px] my-1">Complete</p>
+            </button>
+          </div>
+        </div>
       </div>
-      <div className="h-[25px] bg-[#C25B5D] flex flex-row divide-x divide-solid divide-black">
-        <div className={status1Style}>
-          <button type="button" onClick={handleClick1}>
-            <p className="text-white text-[12px] my-1">Selected</p>
-          </button>
-        </div>
-        <div className={status2Style}>
-          <button type="button" onClick={handleClick2}>
-            <p className="text-white text-[12px] my-1">Purchased</p>
-          </button>
-        </div>
-        <div className={status3Style}>
-          <button type="button" onClick={handleClick3}>
-            <p className="text-white text-[12px] my-1">Arrived</p>
-          </button>
-        </div>
-        <div className={status4Style}>
-          <button type="button" onClick={handleClick4}>
-            <p className="text-white text-[12px] my-1">Complete</p>
-          </button>
-        </div>
-      </div>
-    </div>
+
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent>
+          <form onSubmit={handlePurchaseSubmit}>
+            <DialogHeader>
+              <DialogTitle>Enter Purchase & Delivery Info</DialogTitle>
+              <DialogDescription className="text-center">
+                How much did you pay for <strong>{currentGiftObj.name}?</strong>
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex items-center gap-4">
+              <div className="flex-1">
+                {/* <Label htmlFor="purchasePrice" className="block mb-2">Price</Label> */}
+                <Input id="purchasePrice" placeholder="$..." className="w-[258px] border-1 h-full border-gray-200 mx-auto" value={purchaseFormInput} onChange={handleChange} />
+              </div>
+            </div>
+            <DialogDescription className="mt-4 text-center">
+              Select the <strong>estimated delivery date</strong>
+            </DialogDescription>
+            <div className="flex flex-col items-center">
+              <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border mx-auto" />
+              <Button type="submit" className="mt-4 h-[34px] px-6 bg-[#7fa087] rounded">
+                Submit
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 
@@ -123,6 +226,9 @@ GiftMiniCard.propTypes = {
     name: PropTypes.string,
     giftId: PropTypes.string,
     status: PropTypes.number,
+    shipped: PropTypes.bool,
+    price: PropTypes.string,
+    date: PropTypes.string,
   }),
   onGiftUpdate: PropTypes.func,
 };

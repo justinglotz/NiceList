@@ -20,13 +20,16 @@ import PropTypes from 'prop-types';
 import { AuthProvider } from '@/utils/context/authContext'; // AuthProvider handles authentication state and must run on the client.
 import ViewDirectorBasedOnUserAuthStatus from '@/utils/context/ViewDirector'; // ViewDirector manages what the user sees based on their authentication status.
 import { SearchProvider } from './searchContext';
+import { BudgetProvider } from './budgetContext';
 
 function ClientProvider({ children }) {
   return (
     <AuthProvider>
       <SearchProvider>
-        {/* ViewDirectorBasedOnUserAuthStatus determines the view based on the user's authentication state */}
-        <ViewDirectorBasedOnUserAuthStatus>{children}</ViewDirectorBasedOnUserAuthStatus>
+        <BudgetProvider>
+          {/* ViewDirectorBasedOnUserAuthStatus determines the view based on the user's authentication state */}
+          <ViewDirectorBasedOnUserAuthStatus>{children}</ViewDirectorBasedOnUserAuthStatus>
+        </BudgetProvider>
       </SearchProvider>
     </AuthProvider>
   );
