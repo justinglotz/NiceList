@@ -8,25 +8,23 @@ import { getGiftsByPersonId } from '../../api/giftData';
 import { useSearch } from '../../utils/context/searchContext';
 
 export default function DashboardCard({ personObj, onGiftUpdate, hideCompleted }) {
-  const [gifts, setGifts] = useState([]);
+  const [allGifts, setAllGifts] = useState([]);
+  const [displayGifts, setDisplayGifts] = useState([]);
   const [progress, setProgress] = useState(0);
   const [expandedView, setExpandedView] = useState(false);
   const { searchQuery } = useSearch();
 
+  // Fetch all gifts once when personId changes
   useEffect(() => {
     const fetchGifts = async () => {
       const fetchedGifts = await getGiftsByPersonId(personObj.personId);
-
-      // Only update state if data is different
-      if (JSON.stringify(fetchedGifts) !== JSON.stringify(gifts)) {
-        setGifts(fetchedGifts);
-      }
+      setAllGifts(fetchedGifts);
     };
 
     fetchGifts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [personObj.personId]);
 
+  // Calculate progress based on all gifts, not just displayed ones
   const calculateProgress = useCallback((giftItems) => {
     if (!giftItems || giftItems.length === 0) return 0;
 
@@ -38,43 +36,43 @@ export default function DashboardCard({ personObj, onGiftUpdate, hideCompleted }
     return ((statusSum / (giftItems.length * 4)) * 100).toFixed(0);
   }, []);
 
+  // Update progress and filtered display whenever allGifts or hideCompleted changes
   useEffect(() => {
-    const fetchGifts = async () => {
-      const fetchedGifts = await getGiftsByPersonId(personObj.personId);
-      setGifts(fetchedGifts);
-      setProgress(calculateProgress(fetchedGifts));
-    };
+    // Calculate progress based on ALL gifts
+    setProgress(calculateProgress(allGifts));
 
-    fetchGifts();
-  }, [personObj.personId, calculateProgress]);
+    // Filter for display only
+    if (hideCompleted) {
+      setDisplayGifts(allGifts.filter((gift) => gift.status !== 4));
+    } else {
+      setDisplayGifts(allGifts);
+    }
+  }, [allGifts, hideCompleted, calculateProgress]);
 
-  useEffect(() => {
-    setProgress(calculateProgress(gifts));
-  }, [gifts, calculateProgress]);
-
+  // Handle gift updates by updating the allGifts array
   const handleGiftUpdate = (updatedGift) => {
-    setGifts((prevGifts) =>
+    setAllGifts((prevGifts) =>
       prevGifts.map((gift) => {
         if (gift.giftId === updatedGift.giftId) {
           onGiftUpdate(updatedGift);
-          return updatedGift; // Update the matching gift
+          return updatedGift;
         }
-        return gift; // Return other gifts unchanged
+        return gift;
       }),
     );
   };
 
   let cardHeight = 300;
-  if (gifts.length > 2 && expandedView) {
-    cardHeight += (gifts.length - 2) * 55;
+  if (displayGifts.length > 2 && expandedView) {
+    cardHeight += (displayGifts.length - 2) * 55;
   }
 
   // Sort gifts by date
-  const sortedGifts = [...gifts].sort((a, b) => new Date(a.date) - new Date(b.date));
+  const sortedGifts = [...displayGifts].sort((a, b) => new Date(a.date) - new Date(b.date));
 
   return (
     <div>
-      <div className="w-[300px] bg-[#1e1e1e] rounded-[12px] border-red-500 transition-all transition-500" style={{ height: `${cardHeight}px` }}>
+      <div className="w-[300px] bg-[#1e1e1e] rounded-[12px] border-red-500 transition-all duration-300" style={{ height: `${cardHeight}px` }}>
         <div className="flex flex-row h-[136px] w-full">
           <div className="w-[175px] flex items-start">
             <p className={` text-[18px] pt-[22px] px-[22px] ${searchQuery.length > 0 && personObj.name.toLowerCase().includes(searchQuery.toLowerCase()) ? 'text-red-400' : 'text-white'}`}>{personObj.name}</p>
@@ -86,17 +84,16 @@ export default function DashboardCard({ personObj, onGiftUpdate, hideCompleted }
         <div className="flex flex-col justify-center items-center gap-2">
           {expandedView
             ? sortedGifts.map((gift) => (
-                <div key={gift.giftId} className={`transition-all duration-300 ease-in-out ${hideCompleted && gift.status === 4 ? 'opacity-0 scale-0 h-0 overflow-hidden' : 'opacity-100 scale-100 h-auto'}`}>
+                <div key={gift.giftId} className="transition-all duration-300 ease-in-out">
                   <GiftMiniCard giftObj={gift} onGiftUpdate={handleGiftUpdate} />
                 </div>
               ))
-            : /* Show only the first two gifts when expanded view is false */
-              sortedGifts.slice(0, 2).map((gift) => (
-                <div key={gift.giftId} className={`transition-all duration-300 ease-in-out ${hideCompleted && gift.status === 4 ? 'opacity-0 scale-0 h-0 overflow-hidden' : 'opacity-100 scale-100 h-auto'}`}>
+            : sortedGifts.slice(0, 2).map((gift) => (
+                <div key={gift.giftId} className="transition-all duration-300 ease-in-out">
                   <GiftMiniCard giftObj={gift} onGiftUpdate={handleGiftUpdate} />
                 </div>
               ))}
-          {gifts.length > 2 && (
+          {displayGifts.length > 2 && (
             <div className="w-full flex flex-col">
               <button type="button" className="justify-end text-white text-sm" onClick={() => setExpandedView(!expandedView)}>
                 {expandedView ? 'See Less' : 'See More'}
@@ -109,4 +106,11 @@ export default function DashboardCard({ personObj, onGiftUpdate, hideCompleted }
   );
 }
 
-DashboardCard.propTypes = { personObj: PropTypes.shape({ name: PropTypes.string.isRequired, personId: PropTypes.string.isRequired, uid: PropTypes.string.isRequired, address: PropTypes.string.isRequired }), onGiftUpdate: PropTypes.func, hideCompleted: PropTypes.bool };
+DashboardCard.propTypes = {
+  personObj: PropTypes.shape({
+    personId: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+  }).isRequired,
+  onGiftUpdate: PropTypes.func.isRequired,
+  hideCompleted: PropTypes.bool.isRequired,
+};
