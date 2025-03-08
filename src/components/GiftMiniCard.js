@@ -58,19 +58,19 @@ export default function GiftMiniCard({ giftObj, onGiftUpdate }) {
     if (!giftObj.price || parseFloat(giftObj.price) <= 0) {
       setDialogOpen(true);
     } else if (window.confirm(`Set status of ${currentGiftObj.name} to Purchased?`)) {
-        try {
-          const updatedGift = await updateGift({
-            ...currentGiftObj,
-            status: 2,
-          });
-          setCurrentGiftObj(updatedGift); // Update local state immediately
-          if (onGiftUpdate) {
-            onGiftUpdate(updatedGift); // Notify the parent component
-          }
-        } catch (error) {
-          console.error('Error updating gift:', error);
+      try {
+        const updatedGift = await updateGift({
+          ...currentGiftObj,
+          status: 2,
+        });
+        setCurrentGiftObj(updatedGift); // Update local state immediately
+        if (onGiftUpdate) {
+          onGiftUpdate(updatedGift); // Notify the parent component
         }
+      } catch (error) {
+        console.error('Error updating gift:', error);
       }
+    }
   };
 
   const handlePurchaseSubmit = async (e) => {
@@ -154,17 +154,26 @@ export default function GiftMiniCard({ giftObj, onGiftUpdate }) {
   };
 
   const daysUntilArrival = dayjs(giftObj.date).startOf('day').diff(dayjs().startOf('day'), 'day');
+  const daysUntilArrivalText = () => {
+    if (daysUntilArrival === 1) return 'Arrives tomorrow';
+    if (daysUntilArrival === 0) return 'Arrives today';
+    if (daysUntilArrival === -1) return 'Arrived yesterday';
+    if (daysUntilArrival < 0) return `Arrived ${Math.abs(daysUntilArrival)} days ago`;
+    return `Arrives in ${daysUntilArrival} days`;
+  };
   const getArrivalDateBackgroundColor = () => {
     if (daysUntilArrival > 10) return 'bg-[#4CAF50] text-white'; // Plenty of time (green)
     if (daysUntilArrival > 3) return 'bg-[#FFA726] text-white'; // Getting closer (orange)
-    return 'bg-[#C25B5D] text-white'; // Very soon/past due (red)
+    if (daysUntilArrival === 0) return 'bg-[#FF6347] text-white'; // Arrives today (tomato red)
+    if (daysUntilArrival >= 0) return 'bg-[#C25B5D] text-white'; // Very soon (red)
+    return 'bg-[#8B0000] text-white'; // Past due (darker red)
   };
 
   return (
     <>
       <div className="h-[50px] w-[285px] overflow-hidden rounded-[6px]">
         <div className="h-[25px] bg-[#E6DADA] flex flex-row justify-between">
-          <p className={`mx-1 ${searchQuery.length > 0 && giftObj.name.toLowerCase().includes(searchQuery.toLowerCase()) ? 'text-red-700' : 'text-black'}`}>{giftObj.name}</p> <p className="mr-0.5">{giftObj.date && giftObj.status === 2 ? <Badge className={getArrivalDateBackgroundColor()}>Arrives in {daysUntilArrival} days</Badge> : ''}</p>
+          <p className={`mx-1 ${searchQuery.length > 0 && giftObj.name.toLowerCase().includes(searchQuery.toLowerCase()) ? 'text-red-700' : 'text-black'}`}>{giftObj.name}</p> <p className="mr-0.5">{giftObj.date && giftObj.status === 2 ? <Badge className={getArrivalDateBackgroundColor()}>{daysUntilArrivalText()}</Badge> : ''}</p>
         </div>
         <div className="h-[25px] bg-[#C25B5D] flex flex-row divide-x divide-solid divide-black">
           <div className={status1Style}>
