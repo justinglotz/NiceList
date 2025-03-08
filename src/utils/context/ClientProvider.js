@@ -21,14 +21,17 @@ import { AuthProvider } from '@/utils/context/authContext'; // AuthProvider hand
 import ViewDirectorBasedOnUserAuthStatus from '@/utils/context/ViewDirector'; // ViewDirector manages what the user sees based on their authentication status.
 import { SearchProvider } from './searchContext';
 import { BudgetProvider } from './budgetContext';
+import { HideCompletedProvider } from './hideCompletedContext';
 
 function ClientProvider({ children }) {
   return (
     <AuthProvider>
       <SearchProvider>
         <BudgetProvider>
-          {/* ViewDirectorBasedOnUserAuthStatus determines the view based on the user's authentication state */}
-          <ViewDirectorBasedOnUserAuthStatus>{children}</ViewDirectorBasedOnUserAuthStatus>
+          <HideCompletedProvider>
+            {/* ViewDirectorBasedOnUserAuthStatus determines the view based on the user's authentication state */}
+            <ViewDirectorBasedOnUserAuthStatus>{children}</ViewDirectorBasedOnUserAuthStatus>
+          </HideCompletedProvider>
         </BudgetProvider>
       </SearchProvider>
     </AuthProvider>

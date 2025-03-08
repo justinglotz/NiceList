@@ -6,13 +6,15 @@ import ProgressRing from '../ProgressRing';
 import GiftMiniCard from '../GiftMiniCard';
 import { getGiftsByPersonId } from '../../api/giftData';
 import { useSearch } from '../../utils/context/searchContext';
+import { useHideCompleted } from '../../utils/context/hideCompletedContext';
 
-export default function DashboardCard({ personObj, onGiftUpdate, hideCompleted }) {
+export default function DashboardCard({ personObj, onGiftUpdate }) {
   const [allGifts, setAllGifts] = useState([]);
   const [displayGifts, setDisplayGifts] = useState([]);
   const [progress, setProgress] = useState(0);
   const [expandedView, setExpandedView] = useState(false);
   const { searchQuery } = useSearch();
+  const { hideCompleted } = useHideCompleted();
 
   // Fetch all gifts once when personId changes
   useEffect(() => {
@@ -112,5 +114,4 @@ DashboardCard.propTypes = {
     name: PropTypes.string.isRequired,
   }).isRequired,
   onGiftUpdate: PropTypes.func.isRequired,
-  hideCompleted: PropTypes.bool.isRequired,
 };

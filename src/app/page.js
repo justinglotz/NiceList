@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { getPeople } from '../api/personData';
 import { getGifts } from '../api/giftData';
 import CustomProgressBar from '../components/CustomProgressBar';
+import { useHideCompleted } from '../utils/context/hideCompletedContext';
 
 function Home() {
   const { user } = useAuth();
@@ -13,7 +14,7 @@ function Home() {
   const [gifts, setGifts] = useState([]);
   const [progress, setProgress] = useState(0);
   const [completedGifts, setCompletedGifts] = useState(0);
-  const [hideCompleted, setHideCompleted] = useState(false);
+  const { hideCompleted, setHideCompleted } = useHideCompleted();
 
   useEffect(() => {
     getPeople(user.uid).then(setPeople);
