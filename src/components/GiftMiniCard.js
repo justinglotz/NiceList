@@ -27,7 +27,9 @@ export default function GiftMiniCard({ giftObj, onGiftUpdate }) {
   }, [giftObj]);
 
   const handleChange = (e) => {
-    setPurchaseFormInput(e.target.value);
+    // Get the raw input value and remove any non-numeric characters except decimal point
+    const rawValue = e.target.value.replace(/[^0-9.]/g, '');
+    setPurchaseFormInput(rawValue);
   };
 
   // Adjusts style for each div based on status of the gift
@@ -209,9 +211,9 @@ export default function GiftMiniCard({ giftObj, onGiftUpdate }) {
               </DialogDescription>
             </DialogHeader>
             <div className="flex items-center gap-4">
-              <div className="flex-1">
-                {/* <Label htmlFor="purchasePrice" className="block mb-2">Price</Label> */}
-                <Input id="purchasePrice" placeholder="$..." className="w-[258px] border-1 h-full border-gray-200 mx-auto" value={purchaseFormInput} onChange={handleChange} />
+              <div className="relative mx-auto">
+                <span className="absolute left-[6px] top-1/2 -translate-y-1/2">$</span>
+                <Input id="purchasePrice" placeholder="0.00" className="w-[258px] border-1 h-full border-gray-200 mx-auto pl-8" value={purchaseFormInput} onChange={handleChange} type="text" inputMode="decimal" />
               </div>
             </div>
             <DialogDescription className="mt-4 text-center">
