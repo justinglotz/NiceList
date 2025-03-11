@@ -10,11 +10,17 @@ import { useSearch } from '../../utils/context/searchContext';
 
 export default function GiftsPage() {
   const [gifts, setGifts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const { searchQuery } = useSearch();
 
   const getAllTheGifts = () => {
-    getGifts(user.uid).then(setGifts);
+    setLoading(true);
+    getGifts(user.uid).then((data) => {
+      setGifts(data);
+      // Delay to allow all person data to load
+      setTimeout(() => setLoading(false), 800);
+    });
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -45,7 +51,7 @@ export default function GiftsPage() {
       </div>
       <div className="flex flex-row flex-wrap justify-center gap-4 px-8 mb-4">
         {filteredGifts.map((gift) => (
-          <GiftCard key={gift.giftId} giftObj={gift} onUpdate={getAllTheGifts} />
+          <GiftCard key={gift.giftId} giftObj={gift} onUpdate={getAllTheGifts} loading={loading} />
         ))}
       </div>
     </>
