@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignal, faGift, faUsers, faListUl, faMagnifyingGlass, faScroll } from '@fortawesome/free-solid-svg-icons';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { signOut } from '../utils/auth';
 import { useAuth } from '../utils/context/authContext';
 import { useSearch } from '../utils/context/searchContext';
@@ -21,18 +21,19 @@ export default function NavBar() {
   const [initialBudgetAmount, setInitialBudgetAmount] = useState(0);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [budgetId, setBudgetId] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
     getBudget(user.uid)
       .then((data) => {
-        console.log('Budget data:', data);
         if (data[0] && data[0].amount) {
           const { amount } = data[0];
           const { initialAmount } = data[0];
           setInitialBudgetAmount(initialAmount);
           setBudgetAmount(amount); // Use the value directly
-          console.log('Budget Amount:', initialBudgetAmount);
+          setBudgetId(data[0].budgetId || data[0].firebaseKey);
         } else {
           setBudgetAmount(null);
         }
@@ -46,25 +47,56 @@ export default function NavBar() {
 
   const handleBudgetSubmit = (e) => {
     e.preventDefault();
-    const amount = parseInt(budgetFormInput, 10);
+    const amount = parseInt(budgetFormInput, 10).toFixed(2);
     if (!Number.isNaN(amount)) {
-      const payload = {
-        initialAmount: amount,
-        amount,
-        uid: user.uid,
-      };
-      createBudget(payload).then(({ name }) => {
-        const patchPayload = { budgetId: name };
-        updateBudget(patchPayload);
-      });
-      setBudgetAmount(amount);
+      if (isEditing && budgetId) {
+        // Calculate how much the initial budget has changed
+        const budgetDifference = amount - initialBudgetAmount;
+
+        // Calculate the new current budget by adding the difference to the current budgetAmount
+        const newCurrentBudget = parseFloat(budgetAmount) + parseFloat(budgetDifference);
+
+        // Update existing budget with both new initialAmount and adjusted current amount
+        const payload = {
+          initialAmount: amount,
+          amount: newCurrentBudget.toFixed(2),
+          uid: user.uid,
+          budgetId,
+        };
+        updateBudget(payload);
+
+        // Update state
+        setInitialBudgetAmount(amount);
+        setBudgetAmount(newCurrentBudget.toFixed(2));
+      } else {
+        // Create new budget
+        const payload = {
+          initialAmount: amount,
+          amount,
+          uid: user.uid,
+        };
+        createBudget(payload).then(({ name }) => {
+          const patchPayload = { budgetId: name };
+          updateBudget(patchPayload);
+          setBudgetId(name);
+        });
+        setBudgetAmount(amount);
+        setInitialBudgetAmount(amount);
+      }
       setBudgetFormInput('');
       setDialogOpen(false);
+      setIsEditing(false);
     }
   };
 
   const handleChange = (e) => {
     setBudgetFormInput(e.target.value);
+  };
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+    setBudgetFormInput(initialBudgetAmount); // Pre-populate with initial budget amount
+    setDialogOpen(true);
   };
 
   const renderContent = () => {
@@ -73,9 +105,51 @@ export default function NavBar() {
     }
 
     if (budgetAmount) {
-      return <BudgetProgressBar initialBudget={initialBudgetAmount} currentBudget={budgetAmount} />;
+      return (
+        <div className="w-full max-w-md mx-auto border-1 border-[#7fa087] p-2 rounded-xl">
+          <BudgetProgressBar initialBudget={initialBudgetAmount} currentBudget={budgetAmount} />
+          <div>
+            <Button variant="outline" type="button" className="px-4 mt-2 mx-auto py-2 text-lg bg-[#7fa087] hover:bg-[#6b8872] text-black rounded flex items-center gap-2 w-full" onClick={handleEditClick}>
+              Edit
+            </Button>
+          </div>
+
+          {/* New budget dialog */}
+          <Dialog
+            open={dialogOpen && isEditing}
+            onOpenChange={(open) => {
+              setDialogOpen(open);
+              if (!open) setIsEditing(false);
+            }}
+          >
+            <DialogContent>
+              <form onSubmit={handleBudgetSubmit}>
+                <DialogHeader>
+                  <DialogTitle>Edit your budget</DialogTitle>
+                  <DialogDescription>Update your total budget for Christmas gifts.</DialogDescription>
+                </DialogHeader>
+                <div className="flex items-center space-x-2">
+                  <div className="grid flex-1 gap-2">
+                    <Label htmlFor="budget" className="sr-only">
+                      Budget
+                    </Label>
+                    <div className="relative">
+                      <span className="absolute left-[6px] top-1/2 -translate-y-1/2">$</span>
+                      <Input id="budget" placeholder="0.00" className="border-1 border-grey-400 pl-8" value={budgetFormInput} onChange={handleChange} type="text" inputMode="decimal" />
+                    </div>
+                  </div>
+                  <Button type="submit" size="sm" className="px-3 bg-[#7fa087] !rounded-[8px]">
+                    Update
+                  </Button>
+                </div>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
+      );
     }
 
+    // New budget dialog
     return (
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogTrigger asChild>
@@ -103,13 +177,6 @@ export default function NavBar() {
                 Submit
               </Button>
             </div>
-            <DialogFooter className="sm:justify-start">
-              {/* <DialogClose asChild>
-                <Button type="button" variant="secondary" className='!rounded-[8px] bg-[#7fa087] text-white'>
-                  Close
-                </Button>
-              </DialogClose> */}
-            </DialogFooter>
           </form>
         </DialogContent>
       </Dialog>
@@ -128,7 +195,8 @@ export default function NavBar() {
         </div>
       </div>
 
-      <div className="flex">
+      {/* Fixed-position navigation section */}
+      <div className="absolute left-1/2 transform -translate-x-1/2 top-4 z-10">
         <div className="w-[670px]">
           {/* Main Navigation */}
           <nav className="flex flex-col">
@@ -173,6 +241,9 @@ export default function NavBar() {
           </nav>
         </div>
       </div>
+
+      {/* Invisible placeholder to maintain layout spacing */}
+      <div className="invisible w-[670px]" />
 
       {/* Budget Section */}
       <div>{renderContent()}</div>
