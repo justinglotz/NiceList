@@ -15,7 +15,7 @@ function BudgetProgressBar({ initialBudget, currentBudget }) {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto border-1 border-[#7fa087] p-2 rounded-xl">
+    <div>
       <div className="flex justify-between mb-1">
         <span className="text-sm font-medium">
           ${currentBudget} of ${initialBudget} remaining

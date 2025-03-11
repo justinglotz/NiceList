@@ -51,4 +51,17 @@ const updateBudget = (payload) =>
       .catch(reject);
   });
 
-export { createBudget, getBudget, updateBudget };
+// DELETE BUDGET
+const deleteBudget = (budgetId) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/gifts/${budgetId}.json`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((data) => resolve(data))
+      .catch(reject);
+  });
+
+export { createBudget, getBudget, updateBudget, deleteBudget };
