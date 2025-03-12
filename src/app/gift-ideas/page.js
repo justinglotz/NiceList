@@ -51,13 +51,13 @@ export default function GiftIdeasPage() {
   }, [giftIdeas, searchQuery]);
 
   return (
-    <>
+    <div className="mt-[15px]">
       <GiftIdeaForm onOptimisticAdd={addOptimisticGiftIdea} onFinalRefresh={fetchAndSortGiftIdeas} />
       <div className="mt-4">
         {filteredGiftIdeas.map((giftIdea) => (
           <GiftIdeaCard key={giftIdea.giftIdeaId} giftIdea={giftIdea} onGiftIdeaDelete={() => onGiftIdeaDelete(giftIdea.giftIdeaId)} />
         ))}
       </div>
-    </>
+    </div>
   );
 }

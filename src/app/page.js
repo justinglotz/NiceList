@@ -14,11 +14,16 @@ function Home() {
   const [gifts, setGifts] = useState([]);
   const [progress, setProgress] = useState(0);
   const [completedGifts, setCompletedGifts] = useState(0);
+  const [loading, setLoading] = useState(true);
   const { hideCompleted, setHideCompleted } = useHideCompleted();
 
   useEffect(() => {
+    setLoading(true);
     getPeople(user.uid).then(setPeople);
-    getGifts(user.uid).then(setGifts);
+    getGifts(user.uid).then((data) => {
+      setGifts(data);
+      setTimeout(() => setLoading(false), 800);
+    });
   }, [user.uid]);
 
   useEffect(() => {
@@ -76,7 +81,7 @@ function Home() {
       </div>
       <div className="flex flex-row flex-wrap justify-center gap-4 px-8 mb-4">
         {people.map((personObj) => (
-          <DashboardCard key={personObj.personId} personObj={personObj} onGiftUpdate={handleGiftUpdateInParent} hideCompleted={hideCompleted} />
+          <DashboardCard key={personObj.personId} personObj={personObj} onGiftUpdate={handleGiftUpdateInParent} hideCompleted={hideCompleted} loading={loading} />
         ))}
       </div>
     </div>

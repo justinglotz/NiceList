@@ -7,8 +7,9 @@ import GiftMiniCard from '../GiftMiniCard';
 import { getGiftsByPersonId } from '../../api/giftData';
 import { useSearch } from '../../utils/context/searchContext';
 import { useHideCompleted } from '../../utils/context/hideCompletedContext';
+import Skeleton from '../ui/skeleton';
 
-export default function DashboardCard({ personObj, onGiftUpdate }) {
+export default function DashboardCard({ personObj, onGiftUpdate, loading = false }) {
   const [allGifts, setAllGifts] = useState([]);
   const [displayGifts, setDisplayGifts] = useState([]);
   const [progress, setProgress] = useState(0);
@@ -72,12 +73,35 @@ export default function DashboardCard({ personObj, onGiftUpdate }) {
   // Sort gifts by date
   const sortedGifts = [...displayGifts].sort((a, b) => new Date(a.date) - new Date(b.date));
 
+  const cardBaseStyle = 'w-[300px] bg-[#1e1e1e] rounded-[12px] transition-all duration-300';
+
+  if (loading) {
+    return (
+      <div>
+        <div className={cardBaseStyle} style={{ height: '300px' }}>
+          <div className="flex flex-row h-[136px] w-full">
+            <div className="w-[175px] flex items-start">
+              <Skeleton className="h-[18px] w-2/3 mx-[22px] mt-[22px] bg-gray-700" />
+            </div>
+            <div className="w-[125px] flex items-center justify-center">
+              <Skeleton className="h-[80px] w-[80px] rounded-full bg-gray-700" />
+            </div>
+          </div>
+          <div className="flex flex-col justify-center items-center gap-2 px-4">
+            <Skeleton className="h-[50px] w-full bg-gray-700 rounded-md" />
+            <Skeleton className="h-[50px] w-full bg-gray-700 rounded-md" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
-      <div className="w-[300px] bg-[#1e1e1e] rounded-[12px] border-red-500 transition-all duration-300" style={{ height: `${cardHeight}px` }}>
+      <div className={cardBaseStyle} style={{ height: `${cardHeight}px` }}>
         <div className="flex flex-row h-[136px] w-full">
           <div className="w-[175px] flex items-start">
-            <p className={` text-[18px] pt-[22px] px-[22px] ${searchQuery.length > 0 && personObj.name.toLowerCase().includes(searchQuery.toLowerCase()) ? 'text-red-400' : 'text-white'}`}>{personObj.name}</p>
+            <p className={`text-[18px] pt-[22px] px-[22px] ${searchQuery.length > 0 && personObj.name.toLowerCase().includes(searchQuery.toLowerCase()) ? 'text-red-400' : 'text-white'}`}>{personObj.name}</p>
           </div>
           <div className="w-[125px] flex items-center justify-center">
             <ProgressRing progress={progress} />
@@ -114,4 +138,5 @@ DashboardCard.propTypes = {
     name: PropTypes.string.isRequired,
   }).isRequired,
   onGiftUpdate: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
 };

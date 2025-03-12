@@ -175,7 +175,7 @@ export default function GiftMiniCard({ giftObj, onGiftUpdate }) {
     <>
       <div className="h-[50px] w-[285px] overflow-hidden rounded-[6px]">
         <div className="h-[25px] bg-[#E6DADA] flex flex-row justify-between">
-          <p className={`mx-1 ${searchQuery.length > 0 && giftObj.name.toLowerCase().includes(searchQuery.toLowerCase()) ? 'text-red-700' : 'text-black'}`}>{giftObj.name}</p> <p className="mr-0.5">{giftObj.date && giftObj.status === 2 ? <Badge className={getArrivalDateBackgroundColor()}>{daysUntilArrivalText()}</Badge> : ''}</p>
+          <p className={`mx-1 ${searchQuery.length > 0 && giftObj.name.toLowerCase().includes(searchQuery.toLowerCase()) ? 'text-red-700' : 'text-black'}`}>{giftObj.name}</p> <p className="mr-0.5">{giftObj.date && giftObj.status === 2 ? <Badge className={`${getArrivalDateBackgroundColor()} `}>{daysUntilArrivalText()}</Badge> : ''}</p>
         </div>
         <div className="h-[25px] bg-[#C25B5D] flex flex-row divide-x divide-solid divide-black">
           <div className={status1Style}>
