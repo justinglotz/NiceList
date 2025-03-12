@@ -108,9 +108,12 @@ export default function NavBar() {
       return (
         <div className="w-full max-w-md mx-auto border-1 border-[#7fa087] p-2 rounded-xl">
           <BudgetProgressBar initialBudget={initialBudgetAmount} currentBudget={budgetAmount} />
-          <div>
-            <Button variant="outline" type="button" className="px-4 mt-2 mx-auto py-2 text-lg bg-[#7fa087] hover:bg-[#6b8872] text-black rounded flex items-center gap-2 w-full" onClick={handleEditClick}>
+          <div className="flex flex-row">
+            <Button variant="outline" type="button" className="px-4 mt-2 mx-auto py-2 text-lg bg-[#7fa087] hover:bg-[#6b8872] text-black rounded flex items-center gap-2 w-1/2" onClick={handleEditClick}>
               Edit
+            </Button>
+            <Button variant="outline" type="button" className="px-4 mt-2 mx-auto py-2 text-lg bg-[#7fa087] hover:bg-[#6b8872] text-black rounded flex items-center gap-2 w-1/2" onClick={handleEditClick}>
+              Reset
             </Button>
           </div>
 
@@ -184,7 +187,7 @@ export default function NavBar() {
   };
 
   return (
-    <div className="flex flex-row mt-4 items-start justify-around">
+    <div className="flex flex-row mt-4 items-start justify-between px-4">
       <div className="w-[331px] h-[105px] bg-[#7fa087] rounded-[17px] relative left-4 font-quicksand">
         <div className="p-2">
           <div className="text-black text-xl font-normal">{user.displayName}&apos;s</div>
@@ -196,7 +199,7 @@ export default function NavBar() {
       </div>
 
       {/* Fixed-position navigation section */}
-      <div className="absolute left-1/2 transform -translate-x-1/2 top-4 z-10">
+      <div className="flex flex-grow justify-center mx-4">
         <div className="w-[670px]">
           {/* Main Navigation */}
           <nav className="flex flex-col">
@@ -241,17 +244,15 @@ export default function NavBar() {
           </nav>
         </div>
       </div>
+      <div className="flex flex-col">{renderContent()}</div>
+      <div className="justify-between flex flex-row">
+        {/* Budget Section */}
 
-      {/* Invisible placeholder to maintain layout spacing */}
-      <div className="invisible w-[670px]" />
-
-      {/* Budget Section */}
-      <div>{renderContent()}</div>
-
-      <div>
-        <button type="button" className="px-4 py-2 text-lg bg-[#7fa087] hover:bg-[#6b8872] text-black rounded" onClick={signOut}>
-          Sign Out
-        </button>
+        <div>
+          <button type="button" className="px-4 py-2 text-lg bg-[#7fa087] hover:bg-[#6b8872] text-black rounded" onClick={signOut}>
+            Sign Out
+          </button>
+        </div>
       </div>
     </div>
   );

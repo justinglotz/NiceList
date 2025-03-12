@@ -53,7 +53,7 @@ export default function GiftIdeaForm({ onOptimisticAdd, onFinalRefresh }) {
 
   return (
     <div>
-      <h2 className="font-quicksand text-center mt-2">Gift Ideas</h2>
+      <h3 className="font-quicksand text-center">Gift Ideas</h3>
       <form onSubmit={handleSubmit}>
         <div className="rounded-[17px] border border-[#7fa087] h-[80px] w-4/5 mx-auto flex flex-row">
           <div className="w-[90%] flex justify-center flex-col">

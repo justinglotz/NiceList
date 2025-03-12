@@ -84,7 +84,7 @@ export default function DashboardCard({ personObj, onGiftUpdate, loading = false
               <Skeleton className="h-[18px] w-2/3 mx-[22px] mt-[22px] bg-gray-700" />
             </div>
             <div className="w-[125px] flex items-center justify-center">
-              <Skeleton className="h-[60px] w-[60px] rounded-full bg-gray-700" />
+              <Skeleton className="h-[80px] w-[80px] rounded-full bg-gray-700" />
             </div>
           </div>
           <div className="flex flex-col justify-center items-center gap-2 px-4">
