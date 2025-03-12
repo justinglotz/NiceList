@@ -3,6 +3,7 @@
 import { useAuth } from '@/utils/context/authContext';
 import DashboardCard from '@/components/cards/DashboardCard';
 import React, { useEffect, useState } from 'react';
+import Confetti from 'react-confetti';
 import { getPeople } from '../api/personData';
 import { getGifts } from '../api/giftData';
 import CustomProgressBar from '../components/CustomProgressBar';
@@ -16,6 +17,8 @@ function Home() {
   const [completedGifts, setCompletedGifts] = useState(0);
   const [loading, setLoading] = useState(true);
   const { hideCompleted, setHideCompleted } = useHideCompleted();
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [fadeOutConfetti, setFadeOutConfetti] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -47,6 +50,18 @@ function Home() {
     }
   }, [gifts]);
 
+  useEffect(() => {
+    if (progress === 100) {
+      setShowConfetti(true); // Show confetti when progress hits 100
+      setTimeout(() => {
+        setFadeOutConfetti(true); // Start fade-out effect after 10 seconds
+        setTimeout(() => {
+          setShowConfetti(false); // Hide confetti after fade-out completes
+        }, 2000); // Fade-out duration
+      }, 10000); // 10000 milliseconds = 10 seconds
+    }
+  }, [progress]);
+
   const handleGiftUpdateInParent = (updatedGift) => {
     setGifts((prevGifts) => prevGifts.map((gift) => (gift.giftId === updatedGift.giftId ? updatedGift : gift)));
   };
@@ -61,6 +76,7 @@ function Home() {
 
   return (
     <div className="mx-auto w-full">
+      {showConfetti && <Confetti colors={['#f44336', '#4CAF50']} className={`transition-opacity duration-2000 ${fadeOutConfetti ? 'opacity-0' : 'opacity-100'}`} />}
       <div className="h-[30px] mt-[15px] mb-[5px]">
         <h3 className="text-center font-quicksand">Overall Progress</h3>
       </div>
