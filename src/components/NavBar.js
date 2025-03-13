@@ -11,7 +11,7 @@ import { Button } from './ui/button';
 import Label from './ui/label';
 import { Input } from './ui/input';
 import { useBudget } from '../utils/context/budgetContext';
-import { createBudget, getBudget, updateBudget } from '../api/budgetData';
+import { createBudget, deleteBudget, getBudget, updateBudget } from '../api/budgetData';
 
 export default function NavBar() {
   const { user } = useAuth();
@@ -99,6 +99,13 @@ export default function NavBar() {
     setDialogOpen(true);
   };
 
+  const handleResetClick = () => {
+    setBudgetAmount(null);
+    deleteBudget(budgetId);
+    setIsEditing(false);
+    setDialogOpen(true);
+  };
+
   const renderContent = () => {
     if (isLoading) {
       return <div className="px-4 py-2 text-lg bg-[#7fa087] text-black rounded opacity-0">Loading...</div>;
@@ -112,7 +119,7 @@ export default function NavBar() {
             <Button variant="outline" type="button" className="px-4 mt-2 mx-auto py-2 text-lg bg-[#7fa087] hover:bg-[#6b8872] text-black rounded flex items-center gap-2 w-1/2" onClick={handleEditClick}>
               Edit
             </Button>
-            <Button variant="outline" type="button" className="px-4 mt-2 mx-auto py-2 text-lg bg-[#7fa087] hover:bg-[#6b8872] text-black rounded flex items-center gap-2 w-1/2" onClick={handleEditClick}>
+            <Button variant="outline" type="button" className="px-4 mt-2 mx-auto py-2 text-lg bg-[#7fa087] hover:bg-[#6b8872] text-black rounded flex items-center gap-2 w-1/2" onClick={handleResetClick}>
               Reset
             </Button>
           </div>

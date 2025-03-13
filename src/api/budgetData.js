@@ -54,7 +54,7 @@ const updateBudget = (payload) =>
 // DELETE BUDGET
 const deleteBudget = (budgetId) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/gifts/${budgetId}.json`, {
+    fetch(`${endpoint}/budget/${budgetId}.json`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
