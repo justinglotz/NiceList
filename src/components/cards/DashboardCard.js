@@ -16,6 +16,25 @@ export default function DashboardCard({ personObj, onGiftUpdate, loading = false
   const [expandedView, setExpandedView] = useState(false);
   const { searchQuery } = useSearch();
   const { hideCompleted } = useHideCompleted();
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (expandedView) {
+      // Reset to hidden first
+      setIsVisible(false);
+
+      // Set timeout to make visible
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+      }, 100);
+
+      // Clean up timer
+      return () => clearTimeout(timer);
+    } 
+      setIsVisible(false);
+    
+    return () => {};
+  }, [expandedView]);
 
   // Fetch all gifts once when personId changes
   useEffect(() => {
@@ -67,7 +86,7 @@ export default function DashboardCard({ personObj, onGiftUpdate, loading = false
 
   let cardHeight = 300;
   if (displayGifts.length > 2 && expandedView) {
-    cardHeight += (displayGifts.length - 2) * 55;
+    cardHeight += (displayGifts.length - 2) * 58;
   }
 
   // Sort gifts by date
@@ -108,17 +127,30 @@ export default function DashboardCard({ personObj, onGiftUpdate, loading = false
           </div>
         </div>
         <div className="flex flex-col justify-center items-center gap-2">
-          {expandedView
-            ? sortedGifts.map((gift) => (
-                <div key={gift.giftId} className="transition-all duration-300 ease-in-out">
-                  <GiftMiniCard giftObj={gift} onGiftUpdate={handleGiftUpdate} />
-                </div>
-              ))
-            : sortedGifts.slice(0, 2).map((gift) => (
+          {expandedView ? (
+            <>
+              {/* First two cards always visible */}
+              {sortedGifts.slice(0, 2).map((gift) => (
                 <div key={gift.giftId} className="transition-all duration-300 ease-in-out">
                   <GiftMiniCard giftObj={gift} onGiftUpdate={handleGiftUpdate} />
                 </div>
               ))}
+
+              {/* Additional cards with opacity transition */}
+              {sortedGifts.slice(2).map((gift) => (
+                <div key={gift.giftId} className={`transition-all duration-300 ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+                  <GiftMiniCard giftObj={gift} onGiftUpdate={handleGiftUpdate} />
+                </div>
+              ))}
+            </>
+          ) : (
+            // Non-expanded view: show only first two cards
+            sortedGifts.slice(0, 2).map((gift) => (
+              <div key={gift.giftId} className="transition-all duration-300 ease-in-out">
+                <GiftMiniCard giftObj={gift} onGiftUpdate={handleGiftUpdate} />
+              </div>
+            ))
+          )}
           {displayGifts.length > 2 && (
             <div className="w-full flex flex-col">
               <button type="button" className="justify-end text-white text-sm" onClick={() => setExpandedView(!expandedView)}>
