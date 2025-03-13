@@ -26,13 +26,13 @@ export default function DashboardCard({ personObj, onGiftUpdate, loading = false
       // Set timeout to make visible
       const timer = setTimeout(() => {
         setIsVisible(true);
-      }, 100);
+      }, 50);
 
       // Clean up timer
       return () => clearTimeout(timer);
-    } 
-      setIsVisible(false);
-    
+    }
+    setIsVisible(false);
+
     return () => {};
   }, [expandedView]);
 
