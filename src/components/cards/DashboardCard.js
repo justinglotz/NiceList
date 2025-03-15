@@ -26,7 +26,7 @@ export default function DashboardCard({ personObj, onGiftUpdate, loading = false
       // Set timeout to make visible
       const timer = setTimeout(() => {
         setIsVisible(true);
-      }, 50);
+      }, 150);
 
       // Clean up timer
       return () => clearTimeout(timer);

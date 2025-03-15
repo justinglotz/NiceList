@@ -71,7 +71,7 @@ export default function GiftIdeaCard({ giftIdea, onGiftIdeaDelete }) {
         <div className="w-[10%] rounded-[17px] overflow-hidden flex justify-center bg-[#7fa087] hover:bg-[#6b8872] relative">
           <DropdownMenu>
             <DropdownMenuTrigger className="w-full h-full">
-              <Button type="button" className="w-full h-full bg-[#7fa087] hover:bg-[#6b8872] p-0">
+              <Button type="button" className="w-full h-full bg-[#7fa087] text-black hover:bg-[#6b8872] p-0">
                 Assign...
               </Button>
             </DropdownMenuTrigger>

@@ -70,9 +70,9 @@ function Home() {
     setHideCompleted(e.target.checked);
   };
 
-  if (!gifts) {
-    return <div>Loading...</div>; // Or a loading spinner
-  }
+  // if (!loading && gifts.length === 0 && people.length === 0) {
+  //   return <div className='text-black text-center mt-[15px]'>Your dashboard is empty. <Link href={`/person/new`} passHref>Add some people</Link> and <Link href={`/gift-ideas`} passHref>gift ideas</Link> to get started.</div>;
+  // }
 
   return (
     <div className="mx-auto w-full">

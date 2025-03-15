@@ -49,7 +49,7 @@ export default function PeoplePage() {
         <h3 className="font-quicksand">People</h3>
         <Link href="/person/new" passHref>
           <button type="button" className="px-4 py-2 text-lg bg-[#7fa087] hover:bg-[#6b8872] text-black rounded">
-            New Person
+            Add Person
           </button>
         </Link>
       </div>
