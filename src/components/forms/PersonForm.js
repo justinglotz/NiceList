@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Button } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../utils/context/authContext';
 import { createPerson, updatePerson } from '../../api/personData';
@@ -54,7 +54,7 @@ export default function GiftForm({ obj = initialState }) {
   }, [obj, user]);
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center mt-3">
       <Form className="w-3/4" onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formName">
           <Form.Label>Name</Form.Label>
@@ -80,9 +80,9 @@ export default function GiftForm({ obj = initialState }) {
         </div>
 
         <div className="text-center">
-          <Button variant="primary" type="submit" className="w-25 mt-2 mb-4">
+          <button type="submit" className="px-4 py-2 text-lg bg-[#7fa087] hover:bg-[#6b8872] text-black rounded">
             Submit
-          </Button>
+          </button>
         </div>
       </Form>
     </div>

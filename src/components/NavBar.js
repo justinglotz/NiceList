@@ -220,17 +220,17 @@ export default function NavBar() {
                   </Link>
                 </div>
 
-                {/* Gifts Link */}
-                <div className="flex items-center gap-3">
-                  <Link className="nav-link text-black text-base" href="/gifts">
-                    <FontAwesomeIcon icon={faGift} className="w-6 h-6 text-black" size="lg" /> Gifts
-                  </Link>
-                </div>
-
                 {/* People Link */}
                 <div className="flex items-center gap-3">
                   <Link className="nav-link text-black text-base" href="/people">
                     <FontAwesomeIcon icon={faUsers} className="w-6 h-6 text-black" size="lg" /> People
+                  </Link>
+                </div>
+
+                {/* Gifts Link */}
+                <div className="flex items-center gap-3">
+                  <Link className="nav-link text-black text-base" href="/gifts">
+                    <FontAwesomeIcon icon={faGift} className="w-6 h-6 text-black" size="lg" /> Gifts
                   </Link>
                 </div>
 
