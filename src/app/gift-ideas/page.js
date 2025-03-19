@@ -9,22 +9,40 @@ import { useSearch } from '../../utils/context/searchContext';
 
 export default function GiftIdeasPage() {
   const [giftIdeas, setGiftIdeas] = useState([]);
+  const [setLoading] = useState(true);
+  const [confirmation, setConfirmation] = useState(false);
   const { user } = useAuth();
   const { searchQuery } = useSearch();
 
   const fetchAndSortGiftIdeas = () => {
+    setLoading(true);
     getGiftIdeas(user.uid).then((ideas) => {
       // Sort ideas by timestamp in descending order (most recent first)
       const sortedIdeas = ideas.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
       setGiftIdeas(sortedIdeas);
+      setLoading(false);
     });
   };
 
   const addOptimisticGiftIdea = (newIdea) => {
-    setGiftIdeas((prev) => [{ ...newIdea, firebaseKey: `optimistic-${Date.now()}` }, ...prev]);
+    // Add optimistic UI update with a temporary ID
+    const tempId = `optimistic-${Date.now()}`;
+    setGiftIdeas((prev) => [{ ...newIdea, giftIdeaId: tempId, isOptimistic: true }, ...prev]);
   };
 
-  const onGiftIdeaDelete = () => {
+  const onPersonSelect = () => {
+    setConfirmation(true);
+  };
+
+  const onGiftIdeaDelete = (giftIdeaId) => {
+    setTimeout(() => {
+      setConfirmation(false);
+    }, 500);
+
+    // Remove from UI immediately before backend processes
+    setGiftIdeas((prev) => prev.filter((idea) => idea.giftIdeaId !== giftIdeaId));
+
+    // Then refresh from backend
     fetchAndSortGiftIdeas();
   };
 
@@ -54,8 +72,18 @@ export default function GiftIdeasPage() {
     <div className="mt-[15px]">
       <GiftIdeaForm onOptimisticAdd={addOptimisticGiftIdea} onFinalRefresh={fetchAndSortGiftIdeas} />
       <div className="mt-4">
+        {confirmation && (
+          <div className="flex justify-center w-full mb-2">
+            <div className="bg-green-100 text-green-700 text-sm p-2 rounded w-4/5">
+              <p className="flex items-center justify-center">
+                <span className="mr-2">✓</span>
+                Gift successfully assigned!
+              </p>
+            </div>
+          </div>
+        )}
         {filteredGiftIdeas.map((giftIdea) => (
-          <GiftIdeaCard key={giftIdea.giftIdeaId} giftIdea={giftIdea} onGiftIdeaDelete={() => onGiftIdeaDelete(giftIdea.giftIdeaId)} />
+          <GiftIdeaCard loading={giftIdea.isOptimistic || false} key={giftIdea.giftIdeaId} giftIdea={giftIdea} onGiftIdeaDelete={() => onGiftIdeaDelete(giftIdea.giftIdeaId)} onPersonSelect={onPersonSelect} />
         ))}
       </div>
     </div>

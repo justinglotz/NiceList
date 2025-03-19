@@ -4,13 +4,14 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Loader2 } from 'lucide-react'; // Import loading spinner
 import { Button } from '../ui/button';
 import { getPeople } from '../../api/personData';
 import { useAuth } from '../../utils/context/authContext';
 import { createGift, updateGift } from '../../api/giftData';
 import { deleteGiftIdea } from '../../api/giftIdeaData';
 
-export default function GiftIdeaCard({ giftIdea, onGiftIdeaDelete }) {
+export default function GiftIdeaCard({ giftIdea, onGiftIdeaDelete, loading, onPersonSelect }) {
   const { user } = useAuth();
   const [people, setPeople] = useState([]);
 
@@ -20,6 +21,7 @@ export default function GiftIdeaCard({ giftIdea, onGiftIdeaDelete }) {
 
   const handlePersonSelect = async (person) => {
     try {
+      onPersonSelect();
       // Create gift process...
       const payload = {
         name: giftIdea.giftIdeaName,
@@ -62,27 +64,35 @@ export default function GiftIdeaCard({ giftIdea, onGiftIdeaDelete }) {
           </div>
           <div className="h-1/2 flex items-center">
             <h6 className="mx-3 text-black m-0 p-0 leading-none">
-              <Link href={giftIdea.giftIdeaUrl} target="_blank" rel="noopener noreferrer">
-                Link
-              </Link>
+              {giftIdea.giftIdeaUrl && (
+                <Link href={giftIdea.giftIdeaUrl} target="_blank" rel="noopener noreferrer">
+                  Link
+                </Link>
+              )}
             </h6>
           </div>
         </div>
         <div className="w-[10%] rounded-[17px] overflow-hidden flex justify-center bg-[#7fa087] hover:bg-[#6b8872] relative">
-          <DropdownMenu>
-            <DropdownMenuTrigger className="w-full h-full">
-              <Button type="button" className="w-full h-full bg-[#7fa087] text-black hover:bg-[#6b8872] p-0">
-                Assign...
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {people.map((person) => (
-                <DropdownMenuItem key={person.id} onSelect={() => handlePersonSelect(person, giftIdea)}>
-                  {person.name}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {loading ? (
+            <Button disabled className="w-full h-full bg-[#7fa087] text-black p-0">
+              <Loader2 className="h-4 w-4 animate-spin" />
+            </Button>
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger className="w-full h-full">
+                <Button type="button" className="w-full h-full bg-[#7fa087] text-black hover:bg-[#6b8872] p-0">
+                  Assign...
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {people.map((person) => (
+                  <DropdownMenuItem key={person.id} onSelect={() => handlePersonSelect(person, giftIdea)}>
+                    {person.name}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </div>
     </div>
@@ -90,6 +100,12 @@ export default function GiftIdeaCard({ giftIdea, onGiftIdeaDelete }) {
 }
 
 GiftIdeaCard.propTypes = {
-  giftIdea: PropTypes.shape({ giftIdeaName: PropTypes.string, giftIdeaUrl: PropTypes.string, giftIdeaId: PropTypes.string }),
+  giftIdea: PropTypes.shape({
+    giftIdeaName: PropTypes.string,
+    giftIdeaUrl: PropTypes.string,
+    giftIdeaId: PropTypes.string,
+  }),
   onGiftIdeaDelete: PropTypes.func,
+  onPersonSelect: PropTypes.func,
+  loading: PropTypes.bool,
 };
