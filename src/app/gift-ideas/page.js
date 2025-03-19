@@ -9,18 +9,15 @@ import { useSearch } from '../../utils/context/searchContext';
 
 export default function GiftIdeasPage() {
   const [giftIdeas, setGiftIdeas] = useState([]);
-  const [setLoading] = useState(true);
   const [confirmation, setConfirmation] = useState(false);
   const { user } = useAuth();
   const { searchQuery } = useSearch();
 
   const fetchAndSortGiftIdeas = () => {
-    setLoading(true);
     getGiftIdeas(user.uid).then((ideas) => {
       // Sort ideas by timestamp in descending order (most recent first)
       const sortedIdeas = ideas.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
       setGiftIdeas(sortedIdeas);
-      setLoading(false);
     });
   };
 
