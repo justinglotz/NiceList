@@ -59,7 +59,7 @@ export default function GiftCard({ giftObj, loading = false, onUpdate }) {
   };
 
   // Common container style for both states
-  const containerStyle = 'w-[300px] h-[150px] bg-[#1e1e1e] rounded-[12px] transition-all duration-300 flex flex-col relative';
+  const containerStyle = 'w-[300px] h-[190px] bg-[#1e1e1e] rounded-[12px] transition-all duration-300 flex flex-col relative';
 
   if (loading) {
     return (
