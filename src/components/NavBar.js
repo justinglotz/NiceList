@@ -113,7 +113,7 @@ export default function NavBar() {
 
     if (budgetAmount) {
       return (
-        <div className="w-full max-w-md mx-auto border-1 border-[#7fa087] p-2 rounded-xl">
+        <div className="w-full max-w-md mx-auto border-1 border-[#7fa087] p-2 rounded-xl mb-4">
           <BudgetProgressBar initialBudget={initialBudgetAmount} currentBudget={budgetAmount} />
           <div className="flex flex-row">
             <Button variant="outline" type="button" className="px-4 mt-2 mx-auto py-2 text-lg bg-[#7fa087] hover:bg-[#6b8872] text-black rounded flex items-center gap-2 w-1/2" onClick={handleEditClick}>
@@ -163,7 +163,7 @@ export default function NavBar() {
     return (
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline" type="button" className="px-4 py-2 text-lg bg-[#7fa087] hover:bg-[#6b8872] text-black rounded">
+          <Button variant="outline" type="button" className="px-4 py-2 text-lg bg-[#7fa087] hover:bg-[#6b8872] text-black rounded mb-4">
             Add Budget
           </Button>
         </DialogTrigger>
@@ -194,19 +194,22 @@ export default function NavBar() {
   };
 
   return (
-    <div className="flex flex-row mt-4 items-start justify-between px-4">
-      <div className="w-[331px] h-[105px] bg-[#7fa087] rounded-[17px] relative left-4 font-quicksand">
-        <div className="p-2">
-          <div className="text-black text-xl font-normal">{user.displayName}&apos;s</div>
-          <div className="text-black text-7xl font-bold leading-none">NiceList</div>
-        </div>
-        <div className="absolute bottom-2 right-2">
-          <FontAwesomeIcon icon={faScroll} size="2xl" className="text-black" />
+    <div className="grid grid-cols-3 gap-4 mt-4 px-4 h-[105px]">
+      {/* Left Column - Logo */}
+      <div className="flex justify-start">
+        <div className="relative w-[331px] h-[105px] bg-[#7fa087] rounded-[17px] font-quicksand">
+          <div className="p-2">
+            <div className="text-black text-xl font-normal">{user.displayName}&apos;s</div>
+            <div className="text-black text-7xl font-bold leading-none">NiceList</div>
+          </div>
+          <div className="absolute bottom-2 right-2">
+            <FontAwesomeIcon icon={faScroll} size="2xl" className="text-black" />
+          </div>
         </div>
       </div>
 
-      {/* Fixed-position navigation section */}
-      <div className="flex flex-grow justify-center mx-4">
+      {/* Center Column - Navigation */}
+      <div className="flex justify-center ">
         <div className="w-[670px]">
           {/* Main Navigation */}
           <nav className="flex flex-col">
@@ -251,11 +254,11 @@ export default function NavBar() {
           </nav>
         </div>
       </div>
-      <div className="flex flex-col">{renderContent()}</div>
-      <div className="justify-between flex flex-row">
-        {/* Budget Section */}
 
-        <div>
+      {/* Right Column - Budget and Sign Out */}
+      <div className="flex flex-row justify-between">
+        <div className="mb-4 mx-auto">{renderContent()}</div>
+        <div className="mr-4">
           <button type="button" className="px-4 py-2 text-lg bg-[#7fa087] hover:bg-[#6b8872] text-black rounded" onClick={signOut}>
             Sign Out
           </button>
