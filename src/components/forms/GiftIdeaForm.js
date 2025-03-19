@@ -29,6 +29,7 @@ export default function GiftIdeaForm({ onOptimisticAdd, onFinalRefresh }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const payload = {
       ...formInput,
       uid: user.uid,
@@ -42,13 +43,16 @@ export default function GiftIdeaForm({ onOptimisticAdd, onFinalRefresh }) {
     inputRef.current?.focus();
 
     // Create in DB
-    await createGiftIdea(payload).then(({ name }) => {
+    try {
+      const { name } = await createGiftIdea(payload);
       const patchPayload = { giftIdeaId: name };
-      updateGiftIdea(patchPayload);
-    });
+      await updateGiftIdea(patchPayload);
 
-    // Optional: Refresh to get the actual DB state
-    onFinalRefresh();
+      // Optional: Refresh to get the actual DB state
+      onFinalRefresh();
+    } catch (error) {
+      console.error('Error creating gift idea:', error);
+    }
   };
 
   return (
