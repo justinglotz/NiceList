@@ -64,7 +64,7 @@ export default function GiftIdeaForm({ onOptimisticAdd, onFinalRefresh }) {
             <Input ref={inputRef} type="text" placeholder="Gift Name..." value={formInput.giftIdeaName} onChange={handleChange} className="bg-transparent border-none outline-none text-black w-full" name="giftIdeaName" required />
             <Input type="text" placeholder="Gift URL..." value={formInput.giftIdeaUrl} onChange={handleChange} className="bg-transparent border-none outline-none text-black w-full" name="giftIdeaUrl" />
           </div>
-          <div className="w-[10%] rounded-[17px] overflow-hidden flex justify-center bg-[#7fa087] hover:bg-[#6b8872]">
+          <div className="sm:w-[10%] w-[40%] rounded-[17px] overflow-hidden flex justify-center bg-[#7fa087] hover:bg-[#6b8872]">
             <Button type="submit" className="w-full h-full bg-[#7fa087] text-black hover:bg-[#6b8872] p-0">
               Submit
             </Button>
