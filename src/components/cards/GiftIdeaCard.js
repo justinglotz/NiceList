@@ -72,7 +72,7 @@ export default function GiftIdeaCard({ giftIdea, onGiftIdeaDelete, loading, onPe
             </h6>
           </div>
         </div>
-        <div className="w-[10%] rounded-[17px] overflow-hidden flex justify-center bg-[#7fa087] hover:bg-[#6b8872] relative">
+        <div className="sm:w-[10%] w-[40%] rounded-[17px] overflow-hidden flex justify-center bg-[#7fa087] hover:bg-[#6b8872] relative">
           {loading ? (
             <Button disabled className="w-full h-full bg-[#7fa087] text-black p-0">
               <Loader2 className="h-4 w-4 animate-spin" />

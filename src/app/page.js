@@ -77,14 +77,14 @@ function Home() {
   return (
     <div className="mx-auto w-full">
       {showConfetti && <Confetti colors={['#f44336', '#4CAF50']} className={`transition-opacity duration-2000 ${fadeOutConfetti ? 'opacity-0' : 'opacity-100'}`} />}
-      <div className="h-[30px] mt-[15px] mb-[5px]">
+      <div className="h-[30px] mt-[25px] mb-[5px] sm:mt-[15px]">
         <h3 className="text-center font-quicksand">Overall Progress</h3>
       </div>
       <div className="h-[23px] w-4/5 mx-auto mb-0">
         <CustomProgressBar value={progress} />
       </div>
       <div className="flex flex-row w-4/5 mx-auto relative">
-        <div className="h-[20px] mt-[10px] mb-[15px]" style={{ marginLeft: 'calc(50% - 75px)' }}>
+        <div className="h-[20px] mt-[10px] mb-[30px] sm:mb[15px] mx-auto" style={{ marginLeft: 'calc(50% - 75px)' }}>
           <h6 className="text-center font-semibold font-quicksand">
             {completedGifts}/{gifts.length} Gifts Completed
           </h6>
