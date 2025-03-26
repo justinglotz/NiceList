@@ -83,13 +83,13 @@ function Home() {
       <div className="h-[23px] w-4/5 mx-auto mb-0">
         <CustomProgressBar value={progress} />
       </div>
-      <div className="flex flex-row w-4/5 mx-auto relative">
-        <div className="h-[20px] mt-[10px] mb-[30px] sm:mb[15px] mx-auto" style={{ marginLeft: 'calc(50% - 75px)' }}>
+      <div className="flex flex-row w-4/5 mx-auto relative justify-between">
+        <div className="h-[20px] mt-[10px] mb-[30px] sm:mb-[15px]">
           <h6 className="text-center font-semibold font-quicksand">
             {completedGifts}/{gifts.length} Gifts Completed
           </h6>
         </div>
-        <div className="h-[20px] mt-[10px] mb-[15px] ml-auto">
+        <div className="h-[20px] mt-[10px] mb-[15px]">
           <h6 className="text-center font-semibold font-quicksand">
             <input type="checkbox" className="inline" onChange={handleCheckboxChange} checked={hideCompleted} /> Hide Completed
           </h6>

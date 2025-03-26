@@ -285,6 +285,9 @@ export default function NavBar() {
         {/* Right Column - Budget */}
         <div className="flex flex-row justify-between">
           <div className="mb-4 mx-auto w-4/5 sm:w-auto my-[8px] sm:my-0">{renderContent()}</div>
+          <button type="button" className="px-4 py-2 h-[40px] text-lg bg-[#7fa087] hover:bg-[#6b8872] text-black rounded" onClick={signOut}>
+            Sign Out
+          </button>
         </div>
       </div>
     </>
