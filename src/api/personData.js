@@ -49,7 +49,7 @@ const getSinglePerson = (PersonId) =>
       .catch(reject);
   });
 
-// CREATE TOUR
+// CREATE PERSON
 const createPerson = (payload) =>
   new Promise((resolve, reject) => {
     fetch(`${endpoint}/people.json`, {
@@ -78,19 +78,5 @@ const updatePerson = (payload) =>
       .then((data) => resolve(data))
       .catch(reject);
   });
-
-// GET A SINGLE LOCATIONS TOURS
-// const getLocationTours = (locationId) =>
-//   new Promise((resolve, reject) => {
-//     fetch(`${endpoint}?location=${locationId}`, {
-//       method: 'GET',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//     })
-//       .then((response) => response.json())
-//       .then((data) => resolve(Object.values(data)))
-//       .catch(reject);
-//   });
 
 export { createPerson, updatePerson, deletePerson, getPeople, getSinglePerson };
