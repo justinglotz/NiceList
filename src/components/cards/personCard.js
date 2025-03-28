@@ -11,11 +11,32 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { deletePerson } from '../../api/personData';
+import { deleteGifts, getGiftsByPersonId } from '../../api/giftData';
+import { createGiftIdea, updateGiftIdea } from '../../api/giftIdeaData';
 
 export default function PersonCard({ personObj, loading = false, onUpdate }) {
   const deleteThisPerson = () => {
-    if (window.confirm(`Delete ${personObj.name}?`)) {
-      deletePerson(personObj.personId).then(() => onUpdate(personObj.personId));
+    if (
+      window.confirm(`Delete ${personObj.name}? 
+(All gifts assigned to ${personObj.name} will be converted into gift ideas)`)
+    ) {
+      getGiftsByPersonId(personObj.personId).then((data) => {
+        deleteGifts(data).then(() => {
+          data.forEach((element) =>
+            createGiftIdea({
+              giftIdeaId: element.giftId,
+              giftIdeaName: element.name,
+              giftIdeaUrl: element.url,
+              timestamp: Date.now(),
+              uid: element.uid,
+            }).then(({ name }) => {
+              console.log('name:', name);
+              updateGiftIdea({ giftIdeaId: name });
+            }),
+          );
+          deletePerson(personObj.personId).then(() => onUpdate(personObj.personId));
+        });
+      });
     }
   };
 

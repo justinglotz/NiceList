@@ -64,6 +64,23 @@ const deleteGift = (giftId) =>
       .catch(reject);
   });
 
+// DELETE MULTIPLE GIFTS
+const deleteGifts = (gifts) =>
+  new Promise((resolve, reject) => {
+    Promise.all(
+      gifts.map((gift) =>
+        fetch(`${endpoint}/gifts/${gift.giftId}.json`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }),
+      ),
+    )
+      .then((responses) => resolve(responses))
+      .catch(reject);
+  });
+
 // GET SINGLE GIFT
 const getSingleGift = (giftId) =>
   new Promise((resolve, reject) => {
@@ -118,4 +135,4 @@ const getCompletedGifts = () =>
       .catch(reject);
   });
 
-export { createGift, updateGift, getGifts, deleteGift, getSingleGift, getGiftsByPersonId, getCompletedGifts };
+export { createGift, updateGift, getGifts, deleteGift, getSingleGift, getGiftsByPersonId, getCompletedGifts, deleteGifts };
