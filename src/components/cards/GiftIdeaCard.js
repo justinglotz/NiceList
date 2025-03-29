@@ -68,7 +68,7 @@ export default function GiftIdeaCard({ giftIdea, onGiftIdeaDelete, loading, onPe
   useEffect(() => {}, [currentGiftIdea]);
 
   const handleDeleteGiftIdea = (giftIdeaId) => {
-    if (window.confirm(`Delete ${giftIdea.giftIdeaName}?`)) {
+    if (window.confirm(`Delete ${currentGiftIdea.giftIdeaName}?`)) {
       deleteGiftIdea(giftIdea.giftIdeaId).then(() => {
         onGiftIdeaDelete(giftIdeaId);
       });

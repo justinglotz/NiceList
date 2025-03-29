@@ -4,6 +4,7 @@ import { useAuth } from '@/utils/context/authContext';
 import DashboardCard from '@/components/cards/DashboardCard';
 import React, { useEffect, useState } from 'react';
 import Confetti from 'react-confetti';
+import Link from 'next/link';
 import { getPeople } from '../api/personData';
 import { getGifts } from '../api/giftData';
 import CustomProgressBar from '../components/CustomProgressBar';
@@ -70,10 +71,6 @@ function Home() {
     setHideCompleted(e.target.checked);
   };
 
-  // if (!loading && gifts.length === 0 && people.length === 0) {
-  //   return <div className='text-black text-center mt-[15px]'>Your dashboard is empty. <Link href={`/person/new`} passHref>Add some people</Link> and <Link href={`/gift-ideas`} passHref>gift ideas</Link> to get started.</div>;
-  // }
-
   return (
     <div className="mx-auto w-full">
       {showConfetti && <Confetti colors={['#f44336', '#4CAF50']} className={`transition-opacity duration-2000 ${fadeOutConfetti ? 'opacity-0' : 'opacity-100'}`} />}
@@ -95,6 +92,19 @@ function Home() {
           </h6>
         </div>
       </div>
+      {!loading && gifts.length === 0 && people.length === 0 && (
+        <div className="text-black text-center mt-[15px]">
+          Your dashboard is empty. <br />
+          <Link href="/person/new" passHref>
+            Add some people
+          </Link>{' '}
+          and{' '}
+          <Link href="/gift-ideas" passHref>
+            gift ideas
+          </Link>{' '}
+          to get started.
+        </div>
+      )}
       <div className="flex flex-row flex-wrap justify-center gap-4 px-8 mb-4">
         {people.map((personObj) => (
           <DashboardCard key={personObj.personId} personObj={personObj} onGiftUpdate={handleGiftUpdateInParent} hideCompleted={hideCompleted} loading={loading} />
