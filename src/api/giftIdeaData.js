@@ -64,4 +64,17 @@ const updateGiftIdea = (payload) =>
       .catch(reject);
   });
 
-export { createGiftIdea, getGiftIdeas, deleteGiftIdea, updateGiftIdea };
+// GET GIFT IDEA BY ID
+const getGiftIdeaById = (giftIdeaId) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/gift-ideas/${giftIdeaId}.json`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((data) => resolve(data))
+      .catch(reject);
+  });
+
+export { createGiftIdea, getGiftIdeas, deleteGiftIdea, updateGiftIdea, getGiftIdeaById };

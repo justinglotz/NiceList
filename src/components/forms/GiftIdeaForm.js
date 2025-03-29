@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { createGiftIdea, updateGiftIdea } from '../../api/giftIdeaData';
 import { useAuth } from '../../utils/context/authContext';
 
-export default function GiftIdeaForm({ onOptimisticAdd, onFinalRefresh }) {
+export default function GiftIdeaForm({ onOptimisticAdd, onFinalRefresh, existingFormInput, giftIdeaId, onGiftIdeaUpdate }) {
   const inputRef = useRef(null);
   const [formInput, setFormInput] = useState({
     giftIdeaName: '',
@@ -19,6 +19,15 @@ export default function GiftIdeaForm({ onOptimisticAdd, onFinalRefresh }) {
     giftIdeaUrl: '',
   };
 
+  useEffect(() => {
+    if (existingFormInput) {
+      setFormInput({
+        giftIdeaName: existingFormInput.giftIdeaName || '',
+        giftIdeaUrl: existingFormInput.giftIdeaUrl || '',
+      });
+    }
+  }, [existingFormInput]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormInput((prevState) => ({
@@ -29,35 +38,46 @@ export default function GiftIdeaForm({ onOptimisticAdd, onFinalRefresh }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (existingFormInput) {
+      console.log(`Form input:`, formInput);
+      const payload = {
+        ...formInput,
+        uid: user.uid,
+        timestamp: Date.now(),
+        giftIdeaId,
+      };
+      updateGiftIdea(payload).then(() => {
+        onGiftIdeaUpdate(payload);
+      });
+    } else {
+      const payload = {
+        ...formInput,
+        uid: user.uid,
+        timestamp: Date.now(),
+      };
 
-    const payload = {
-      ...formInput,
-      uid: user.uid,
-      timestamp: Date.now(),
-    };
+      // Optimistically add to the UI
+      onOptimisticAdd(payload);
 
-    // Optimistically add to the UI
-    onOptimisticAdd(payload);
+      setFormInput(initialState);
+      inputRef.current?.focus();
 
-    setFormInput(initialState);
-    inputRef.current?.focus();
+      // Create in DB
+      try {
+        const { name } = await createGiftIdea(payload);
+        const patchPayload = { giftIdeaId: name };
+        await updateGiftIdea(patchPayload);
 
-    // Create in DB
-    try {
-      const { name } = await createGiftIdea(payload);
-      const patchPayload = { giftIdeaId: name };
-      await updateGiftIdea(patchPayload);
-
-      // Optional: Refresh to get the actual DB state
-      onFinalRefresh();
-    } catch (error) {
-      console.error('Error creating gift idea:', error);
+        // Optional: Refresh to get the actual DB state
+        onFinalRefresh();
+      } catch (error) {
+        console.error('Error creating gift idea:', error);
+      }
     }
   };
 
   return (
     <div>
-      <h3 className="font-quicksand text-center">Gift Ideas</h3>
       <form onSubmit={handleSubmit}>
         <div className="rounded-[17px] border border-[#7fa087] h-[80px] w-4/5 mx-auto flex flex-row">
           <div className="w-[90%] flex justify-center flex-col">
@@ -76,6 +96,12 @@ export default function GiftIdeaForm({ onOptimisticAdd, onFinalRefresh }) {
 }
 
 GiftIdeaForm.propTypes = {
-  onOptimisticAdd: PropTypes.func,
-  onFinalRefresh: PropTypes.func,
+  onOptimisticAdd: PropTypes.func.isRequired,
+  onFinalRefresh: PropTypes.func.isRequired,
+  existingFormInput: PropTypes.shape({
+    giftIdeaName: PropTypes.string,
+    giftIdeaUrl: PropTypes.string,
+  }),
+  giftIdeaId: PropTypes.string.isRequired,
+  onGiftIdeaUpdate: PropTypes.func.isRequired,
 };

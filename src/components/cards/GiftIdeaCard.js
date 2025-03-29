@@ -5,15 +5,20 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Loader2 } from 'lucide-react'; // Import loading spinner
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '../ui/button';
 import { getPeople } from '../../api/personData';
 import { useAuth } from '../../utils/context/authContext';
 import { createGift, updateGift } from '../../api/giftData';
 import { deleteGiftIdea } from '../../api/giftIdeaData';
+import GiftIdeaForm from '../forms/GiftIdeaForm';
 
 export default function GiftIdeaCard({ giftIdea, onGiftIdeaDelete, loading, onPersonSelect }) {
   const { user } = useAuth();
   const [people, setPeople] = useState([]);
+  const [editing, setEditing] = useState(false);
+  const [currentGiftIdea, setCurrentGiftIdea] = useState(giftIdea);
 
   useEffect(() => {
     getPeople(user.uid).then(setPeople);
@@ -24,11 +29,11 @@ export default function GiftIdeaCard({ giftIdea, onGiftIdeaDelete, loading, onPe
       onPersonSelect();
       // Create gift process...
       const payload = {
-        name: giftIdea.giftIdeaName,
+        name: currentGiftIdea.giftIdeaName,
         personId: person.personId,
         status: 1,
         uid: user.uid,
-        url: giftIdea.giftIdeaUrl,
+        url: currentGiftIdea.giftIdeaUrl,
         shipped: person.shipped,
       };
 
@@ -39,7 +44,6 @@ export default function GiftIdeaCard({ giftIdea, onGiftIdeaDelete, loading, onPe
               ...payload,
               giftId: name,
             };
-            console.log(`Deleting gift idea: ${giftIdea.giftIdeaId}`);
             updateGift(patchPayload)
               .then(() => deleteGiftIdea(giftIdea.giftIdeaId))
               .then(resolve)
@@ -55,22 +59,57 @@ export default function GiftIdeaCard({ giftIdea, onGiftIdeaDelete, loading, onPe
     }
   };
 
-  return (
+  const onGiftIdeaUpdate = (payload) => {
+    setEditing(false);
+    // set the gift idea to the updated version
+    setCurrentGiftIdea(payload);
+  };
+
+  useEffect(() => {}, [currentGiftIdea]);
+
+  const handleDeleteGiftIdea = (giftIdeaId) => {
+    if (window.confirm(`Delete ${giftIdea.giftIdeaName}?`)) {
+      deleteGiftIdea(giftIdea.giftIdeaId).then(() => {
+        onGiftIdeaDelete(giftIdeaId);
+      });
+    }
+  };
+
+  return editing ? (
+    <GiftIdeaForm giftIdeaId={giftIdea.giftIdeaId} existingFormInput={{ giftIdeaName: currentGiftIdea.giftIdeaName, giftIdeaUrl: currentGiftIdea.giftIdeaUrl }} onGiftIdeaUpdate={onGiftIdeaUpdate} />
+  ) : (
     <div className="mb-2">
       <div className="rounded-[17px] border border-[#7fa087] h-[80px] w-4/5 mx-auto flex flex-row">
         <div className="w-[90%] flex flex-col justify-center">
           <div className="h-1/2 flex items-center">
-            <h6 className="mx-3 text-black m-0 p-0 leading-none">{giftIdea.giftIdeaName}</h6>
+            <h6 className="mx-3 text-black m-0 p-0 leading-none">{currentGiftIdea?.giftIdeaName}</h6>
           </div>
           <div className="h-1/2 flex items-center">
             <h6 className="mx-3 text-black m-0 p-0 leading-none">
-              {giftIdea.giftIdeaUrl && (
-                <Link href={giftIdea.giftIdeaUrl} target="_blank" rel="noopener noreferrer">
+              {currentGiftIdea.giftIdeaUrl && (
+                <Link href={currentGiftIdea.giftIdeaUrl} target="_blank" rel="noopener noreferrer">
                   Link
                 </Link>
               )}
             </h6>
           </div>
+        </div>
+        <div className="sm:w-[10%] w-[40%] rounded-[17px] overflow-hidden flex justify-center relative border-1 sm:border-none">
+          <DropdownMenu>
+            <DropdownMenuTrigger className="w-full h-full">
+              <Button type="button" className="w-full h-full bg-transparent text-black p-0">
+                <FontAwesomeIcon icon={faEllipsis} className="text-black" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <Button variant="outline" className="w-[50%]" onClick={() => setEditing(true)}>
+                Edit{' '}
+              </Button>
+              <Button variant="outline" className="w-[50%]" onClick={() => handleDeleteGiftIdea(giftIdea.giftIdeaId)}>
+                Delete{' '}
+              </Button>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         <div className="sm:w-[10%] w-[40%] rounded-[17px] overflow-hidden flex justify-center bg-[#7fa087] hover:bg-[#6b8872] relative">
           {loading ? (
@@ -86,7 +125,7 @@ export default function GiftIdeaCard({ giftIdea, onGiftIdeaDelete, loading, onPe
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 {people.map((person) => (
-                  <DropdownMenuItem key={person.id} onSelect={() => handlePersonSelect(person, giftIdea)}>
+                  <DropdownMenuItem key={person.id} onSelect={() => handlePersonSelect(person, currentGiftIdea)}>
                     {person.name}
                   </DropdownMenuItem>
                 ))}
