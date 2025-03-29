@@ -64,7 +64,7 @@ export default function GiftForm({ obj = initialState }) {
       <Form className="w-3/4" onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formName">
           <Form.Label>Name</Form.Label>
-          <Form.Control type="text" placeholder="Enter gift name" name="name" value={formInput.name} onChange={handleChange} />
+          <Form.Control type="text" placeholder="Enter gift name" name="name" value={formInput.name} onChange={handleChange} required />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formUrl">

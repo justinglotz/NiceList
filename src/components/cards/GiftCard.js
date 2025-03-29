@@ -134,18 +134,20 @@ export default function GiftCard({ giftObj, loading = false, onUpdate }) {
         </div>
         <div className="absolute bottom-2 left-2">
           <div className="h-[40px] w-[40px] text-center flex flex-row justify-center items-center">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Button className="p-0 bg-[#1e1e1e] h-full w-full rounded-lg" onClick={() => window.open(giftObj.url, '_blank')}>
-                    <FontAwesomeIcon icon={faWindowRestore} className="text-[#E6DADA]" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent className="bg-[#474747] text-white border-none rounded-md text-sm shadow-md m-2">
-                  <p className="m-0">View Gift Link</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            {giftObj.url && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Button className="p-0 bg-[#1e1e1e] h-full w-full rounded-lg" onClick={() => window.open(giftObj.url, '_blank')}>
+                      <FontAwesomeIcon icon={faWindowRestore} className="text-[#E6DADA]" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-[#474747] text-white border-none rounded-md text-sm shadow-md m-2">
+                    <p className="m-0">View Gift Link</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
           </div>
           {/* <button type="button" className="px-4 py-2 text-lg bg-[#7fa087] hover:bg-[#6b8872] text-black rounded">Link to Gift</button> */}
         </div>

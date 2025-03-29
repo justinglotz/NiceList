@@ -14,7 +14,7 @@ const initialState = {
   shipped: false, // Add this field to initialState
 };
 
-export default function GiftForm({ obj = initialState }) {
+export default function PersonForm({ obj = initialState }) {
   const [formInput, setFormInput] = useState(obj);
   const { user } = useAuth();
   const router = useRouter();
@@ -56,9 +56,9 @@ export default function GiftForm({ obj = initialState }) {
   return (
     <div className="flex justify-center mt-3">
       <Form className="w-3/4" onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="formName">
+        <Form.Group className="mb-3" controlId="formName" aria-required>
           <Form.Label>Name</Form.Label>
-          <Form.Control type="text" placeholder="Enter person name" name="name" value={formInput.name} onChange={handleChange} />
+          <Form.Control type="text" placeholder="Enter person name" name="name" value={formInput.name} onChange={handleChange} required />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formUrl">
@@ -89,7 +89,7 @@ export default function GiftForm({ obj = initialState }) {
   );
 }
 
-GiftForm.propTypes = {
+PersonForm.propTypes = {
   obj: PropTypes.shape({
     name: PropTypes.string,
     address: PropTypes.string,
