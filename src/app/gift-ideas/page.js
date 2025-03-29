@@ -67,6 +67,7 @@ export default function GiftIdeasPage() {
 
   return (
     <div className="mt-[15px]">
+      <h3 className="font-quicksand text-center">Gift Ideas</h3>
       <GiftIdeaForm onOptimisticAdd={addOptimisticGiftIdea} onFinalRefresh={fetchAndSortGiftIdeas} />
       <div className="mt-4">
         {confirmation && (

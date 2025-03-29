@@ -163,9 +163,11 @@ export default function NavBar() {
     return (
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline" type="button" className="px-4 py-2 text-lg bg-[#7fa087] hover:bg-[#6b8872] text-black rounded mb-4">
-            Add Budget
-          </Button>
+          <div className="flex justify-center mt-2 sm:mt-0">
+            <Button variant="outline" type="button" className="px-4 py-2 text-lg bg-[#7fa087] hover:bg-[#6b8872] text-black rounded mb-4">
+              Add Budget
+            </Button>
+          </div>
         </DialogTrigger>
         <DialogContent>
           <form onSubmit={handleBudgetSubmit}>
@@ -264,12 +266,12 @@ export default function NavBar() {
         <div className="mt-3">{renderLogo()}</div>
 
         {/* Second: Budget */}
-        <div className="mx-3 mt-3">
+        <div className="mx-auto sm:mx-3">
           <div className="mx-auto w-full">{renderContent()}</div>
         </div>
 
         {/* Third: Navigation */}
-        <div className="mx-3 mt-3">{renderNavigation()}</div>
+        <div className="mx-3 sm:mt-3">{renderNavigation()}</div>
       </div>
 
       {/* Desktop Layout - Only shown on sm screens and up */}
