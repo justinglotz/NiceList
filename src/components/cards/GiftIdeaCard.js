@@ -124,11 +124,15 @@ export default function GiftIdeaCard({ giftIdea, onGiftIdeaDelete, loading, onPe
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                {people.map((person) => (
-                  <DropdownMenuItem key={person.id} onSelect={() => handlePersonSelect(person, currentGiftIdea)}>
-                    {person.name}
-                  </DropdownMenuItem>
-                ))}
+                {people.length < 1 ? (
+                  <DropdownMenuItem disabled>You need to create a person before you can assign this gift.</DropdownMenuItem>
+                ) : (
+                  people.map((person) => (
+                    <DropdownMenuItem key={person.id} onSelect={() => handlePersonSelect(person, currentGiftIdea)}>
+                      {person.name}
+                    </DropdownMenuItem>
+                  ))
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           )}
