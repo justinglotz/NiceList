@@ -23,12 +23,20 @@ This app is designed for people who may struggle to remember where gifts are bei
 - [Deployed Site](https://nice-list-sigma.vercel.app/)
 
 ## Project Screenshots 
+Dashboard
+<img width="1512" alt="Dashboard" src="https://github.com/user-attachments/assets/e5734660-33ce-4fd2-a1be-dba2568f8d46" /> 
 
-<img width="1512" alt="Dashboard" src="https://github.com/user-attachments/assets/e5734660-33ce-4fd2-a1be-dba2568f8d46" /> Dashboard
-<img width="1511" alt="Gift Ideas" src="https://github.com/user-attachments/assets/257398e3-1520-47af-bb51-c5a7a3adfe74" /> Gift Ideas Page
-<img width="1512" alt="Purchase & Delivery" src="https://github.com/user-attachments/assets/04e6b7f0-eb43-4bfc-af3b-022f1efa8dda" /> Purchase & Delivery Dialog
-<img width="1511" alt="People" src="https://github.com/user-attachments/assets/7d81a253-2ffd-48fc-a906-b0e7ff55b004" /> People Page
-<img width="1512" alt="Gifts" src="https://github.com/user-attachments/assets/33164e71-9835-4e8f-9c29-7e2ae78907c8" /> Gifts Page
+Gift Ideas Page
+<img width="1511" alt="Gift Ideas" src="https://github.com/user-attachments/assets/257398e3-1520-47af-bb51-c5a7a3adfe74" /> 
+
+Purchase & Delivery Dialog
+<img width="1512" alt="Purchase & Delivery" src="https://github.com/user-attachments/assets/04e6b7f0-eb43-4bfc-af3b-022f1efa8dda" /> 
+
+People Page
+<img width="1511" alt="People" src="https://github.com/user-attachments/assets/7d81a253-2ffd-48fc-a906-b0e7ff55b004" /> 
+
+Gifts Page
+<img width="1512" alt="Gifts" src="https://github.com/user-attachments/assets/33164e71-9835-4e8f-9c29-7e2ae78907c8" /> 
 
 
 
