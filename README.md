@@ -38,6 +38,10 @@ People Page
 Gifts Page
 <img width="1512" alt="Gifts" src="https://github.com/user-attachments/assets/33164e71-9835-4e8f-9c29-7e2ae78907c8" /> 
 
+Mobile Layout
+<img width="352" alt="Screenshot 2025-04-04 at 7 28 32 AM" src="https://github.com/user-attachments/assets/4c75b10c-06ee-4ec7-882b-8d5c0936c88a" />
+
+
 
 
 
