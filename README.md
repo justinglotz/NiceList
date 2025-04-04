@@ -24,15 +24,11 @@ This app is designed for people who may struggle to remember where gifts are bei
 
 ## Project Screenshots 
 
-
-<img width="1512" alt="Screenshot 2025-03-03 at 7 35 39 AM" src="https://github.com/user-attachments/assets/e0080676-21ee-46e5-ad06-9a68a662d2cb" />
-<img width="1512" alt="Screenshot 2025-03-03 at 7 36 25 AM" src="https://github.com/user-attachments/assets/571a8b79-fa70-40ed-8933-0d7b26d724ff" />
-<img width="1512" alt="Screenshot 2025-03-03 at 7 36 34 AM" src="https://github.com/user-attachments/assets/fc1190dc-b297-4e04-9e74-6520d4658407" />
-<img width="1512" alt="Screenshot 2025-03-03 at 7 36 49 AM" src="https://github.com/user-attachments/assets/3c8f18bd-f297-4871-993c-e914b801a60e" />
-<img width="1512" alt="Screenshot 2025-03-03 at 7 37 00 AM" src="https://github.com/user-attachments/assets/477f5ebe-20eb-480e-a424-678656123144" />
-<img width="1512" alt="Screenshot 2025-03-03 at 7 37 19 AM" src="https://github.com/user-attachments/assets/bd952b26-432d-4419-9bb4-35c5bdae3779" />
-<img width="1274" alt="Screenshot 2025-03-03 at 7 37 26 AM" src="https://github.com/user-attachments/assets/93977b5d-f051-4e24-9d6f-30ef700cbaa3" />
-
+<img width="1512" alt="Dashboard" src="https://github.com/user-attachments/assets/e5734660-33ce-4fd2-a1be-dba2568f8d46" /> Dashboard
+<img width="1511" alt="Gift Ideas" src="https://github.com/user-attachments/assets/257398e3-1520-47af-bb51-c5a7a3adfe74" /> Gift Ideas Page
+<img width="1512" alt="Purchase & Delivery" src="https://github.com/user-attachments/assets/04e6b7f0-eb43-4bfc-af3b-022f1efa8dda" /> Purchase & Delivery Dialog
+<img width="1511" alt="People" src="https://github.com/user-attachments/assets/7d81a253-2ffd-48fc-a906-b0e7ff55b004" /> People Page
+<img width="1512" alt="Gifts" src="https://github.com/user-attachments/assets/33164e71-9835-4e8f-9c29-7e2ae78907c8" /> Gifts Page
 
 
 
