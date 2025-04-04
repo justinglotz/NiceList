@@ -9,7 +9,7 @@ This app is designed for people who may struggle to remember where gifts are bei
 - **User Authentication**: Secure sign-in and sign-out using Firebase authentication.
 - **Dashboard**: Users can see overall progress for their Christmas shopping, progress per person, and the status of each gift, all in one centralized view.
 - **Budget**: Users can create a budget for their Christmas shopping, and any gifts they purchase will automatically be deducted from that budget.
-- **Gift Ideas**: Create a gift ideas list to remember good gift ideas throughout the year. Then when you're ready to shop, assign the gift ideas to people.
+- **Gift Ideas**: Keep track of gift ideas year-round with a dedicated gift ideas list. Easily save potential gifts, then seamlessly assign them to recipients when it's time to shop.
 - **Gift Status**: Edit the status of a gift from the dashboard and see the gift status update in real time, including updating progress.
 
 ## Video Walkthrough of NiceList
