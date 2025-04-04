@@ -267,7 +267,7 @@ export default function NavBar() {
 
         {/* Second: Budget */}
         <div className="mx-auto sm:mx-3">
-          <div className="mx-auto w-full">{renderContent()}</div>
+          <div className="mx-auto w-4/5 sm:w-full">{renderContent()}</div>
         </div>
 
         {/* Third: Navigation */}
