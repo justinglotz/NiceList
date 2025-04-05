@@ -79,7 +79,7 @@ export default function GiftIdeaForm({ onOptimisticAdd, onFinalRefresh, existing
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <div className="rounded-[17px] border border-[#7fa087] h-[80px] w-4/5 mx-auto flex flex-row">
+        <div className="rounded-[17px] border border-[#7fa087] h-[80px] w-4/5 mx-auto flex flex-row mb-2">
           <div className="w-[90%] flex justify-center flex-col">
             <Input ref={inputRef} type="text" placeholder="Gift Name..." value={formInput.giftIdeaName} onChange={handleChange} className="bg-transparent border-none outline-none text-black w-full" name="giftIdeaName" required />
             <Input type="text" placeholder="Gift URL..." value={formInput.giftIdeaUrl} onChange={handleChange} className="bg-transparent border-none outline-none text-black w-full" name="giftIdeaUrl" />

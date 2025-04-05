@@ -40,7 +40,7 @@ export default function PersonCard({ personObj, loading = false, onUpdate }) {
     }
   };
 
-  const containerStyle = 'w-[300px] h-[150px] bg-[#1e1e1e] rounded-[12px] transition-all duration-300 flex flex-col relative';
+  const containerStyle = 'w-[300px] h-[180px] bg-[#1e1e1e] rounded-[12px] transition-all duration-300 flex flex-col relative';
 
   if (loading) {
     return (
@@ -70,14 +70,18 @@ export default function PersonCard({ personObj, loading = false, onUpdate }) {
 
   return (
     <div className={containerStyle}>
-      <div className="h-[80%]">
-        <div className="flex flex-row justify-between">
-          <p className="text-[18px] pt-[22px] px-[22px] text-white">{personObj.name}</p>
-          {personObj.shipped && <Badge className="bg-[#4CAF50] h-[30px] m-3 border-none text-black">Shipping Directly</Badge>}
+      <div className="flex flex-col h-full">
+        {/* Scrollable content area */}
+        <div className="overflow-hidden flex-grow">
+          <div className="flex flex-row justify-between">
+            <p className="text-[18px] pt-[22px] px-[22px] text-white break-words">{personObj.name}</p>
+            {personObj.shipped && <Badge className="bg-[#4CAF50] h-[30px] m-3 border-none text-black">Shipping Directly</Badge>}
+          </div>
+          <p className="text-[14px] px-[22px] text-gray-400 break-words">{personObj.address}</p>
         </div>
-        <p className="text-[14px] px-[22px] text-gray-400">{personObj.address}</p>
-        <div className="flex flex-row justify-end m-2">
-          <div className="h-[40px] w-[40px] text-center flex flex-row justify-center items-center">
+
+        <div className="flex justify-end m-2 mt-auto">
+          <div className="h-[40px] w-[40px] flex justify-center items-center">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
@@ -93,7 +97,7 @@ export default function PersonCard({ personObj, loading = false, onUpdate }) {
               </Tooltip>
             </TooltipProvider>
           </div>
-          <div className="h-[40px] w-[40px] text-center flex flex-row justify-center items-center">
+          <div className="h-[40px] w-[40px] flex justify-center items-center">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>

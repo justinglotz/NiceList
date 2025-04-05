@@ -69,7 +69,7 @@ export default function GiftIdeasPage() {
     <div className="mt-[15px]">
       <h3 className="font-quicksand text-center">Gift Ideas</h3>
       <GiftIdeaForm onOptimisticAdd={addOptimisticGiftIdea} onFinalRefresh={fetchAndSortGiftIdeas} />
-      <div className="mt-4">
+      <div className="mt-3">
         {confirmation && (
           <div className="flex justify-center w-full mb-2">
             <div className="bg-green-100 text-green-700 text-sm p-2 rounded w-4/5">
