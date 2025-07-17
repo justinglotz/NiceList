@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-function CustomProgressBar({ value, max = 100, className = '' }) {
+function OverallProgressBar({ value, max = 100, className = '' }) {
   const [width, setWidth] = useState(0);
 
   useEffect(() => {
@@ -20,9 +20,9 @@ function CustomProgressBar({ value, max = 100, className = '' }) {
   );
 }
 
-export default CustomProgressBar;
+export default OverallProgressBar;
 
-CustomProgressBar.propTypes = {
+OverallProgressBar.propTypes = {
   value: PropTypes.number,
   max: PropTypes.number,
   className: PropTypes.string,

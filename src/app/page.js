@@ -7,8 +7,9 @@ import Confetti from 'react-confetti';
 import Link from 'next/link';
 import { getPeople } from '../api/personData';
 import { getGifts } from '../api/giftData';
-import CustomProgressBar from '../components/CustomProgressBar';
+import OverallProgressBar from '../components/OverallProgressBar';
 import { useHideCompleted } from '../utils/context/hideCompletedContext';
+import useConfettiOnComplete from '../hooks/useConfettiOnComplete';
 
 function Home() {
   const { user } = useAuth();
@@ -18,8 +19,7 @@ function Home() {
   const [completedGifts, setCompletedGifts] = useState(0);
   const [loading, setLoading] = useState(true);
   const { hideCompleted, setHideCompleted } = useHideCompleted();
-  const [showConfetti, setShowConfetti] = useState(false);
-  const [fadeOutConfetti, setFadeOutConfetti] = useState(false);
+  const { showConfetti, fadeOutConfetti } = useConfettiOnComplete(progress);
 
   useEffect(() => {
     setLoading(true);
@@ -51,18 +51,6 @@ function Home() {
     }
   }, [gifts]);
 
-  useEffect(() => {
-    if (progress === 100) {
-      setShowConfetti(true); // Show confetti when progress hits 100
-      setTimeout(() => {
-        setFadeOutConfetti(true); // Start fade-out effect after 10 seconds
-        setTimeout(() => {
-          setShowConfetti(false); // Hide confetti after fade-out completes
-        }, 2000); // Fade-out duration
-      }, 10000); // 10000 milliseconds = 10 seconds
-    }
-  }, [progress]);
-
   const handleGiftUpdateInParent = (updatedGift) => {
     setGifts((prevGifts) => prevGifts.map((gift) => (gift.giftId === updatedGift.giftId ? updatedGift : gift)));
   };
@@ -78,7 +66,7 @@ function Home() {
         <h3 className="text-center font-quicksand">Overall Progress</h3>
       </div>
       <div className="h-[23px] w-4/5 mx-auto mb-0">
-        <CustomProgressBar value={progress} />
+        <OverallProgressBar value={progress} />
       </div>
       <div className="flex flex-row w-4/5 mx-auto relative justify-between">
         <div className="h-[20px] mt-[10px] mb-[30px] sm:mb-[15px]">

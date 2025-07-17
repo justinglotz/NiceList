@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ProgressRing from '../ProgressRing';
 import GiftMiniCard from '../GiftMiniCard';
@@ -8,6 +8,7 @@ import { getGiftsByPersonId } from '../../api/giftData';
 import { useSearch } from '../../utils/context/searchContext';
 import { useHideCompleted } from '../../utils/context/hideCompletedContext';
 import Skeleton from '../ui/skeleton';
+import calculateOverallProgress from '../../utils/calculateOverallProgress';
 
 export default function DashboardCard({ personObj, onGiftUpdate, loading = false }) {
   const [allGifts, setAllGifts] = useState([]);
@@ -47,21 +48,11 @@ export default function DashboardCard({ personObj, onGiftUpdate, loading = false
   }, [personObj.personId]);
 
   // Calculate progress based on all gifts, not just displayed ones
-  const calculateProgress = useCallback((giftItems) => {
-    if (!giftItems || giftItems.length === 0) return 0;
-
-    let statusSum = 0;
-    giftItems.forEach((gift) => {
-      statusSum += gift.status;
-    });
-
-    return ((statusSum / (giftItems.length * 4)) * 100).toFixed(0);
-  }, []);
 
   // Update progress and filtered display whenever allGifts or hideCompleted changes
   useEffect(() => {
     // Calculate progress based on ALL gifts
-    setProgress(calculateProgress(allGifts));
+    setProgress(calculateOverallProgress(allGifts));
 
     // Filter for display only
     if (hideCompleted) {
@@ -69,7 +60,7 @@ export default function DashboardCard({ personObj, onGiftUpdate, loading = false
     } else {
       setDisplayGifts(allGifts);
     }
-  }, [allGifts, hideCompleted, calculateProgress]);
+  }, [allGifts, hideCompleted]);
 
   // Handle gift updates by updating the allGifts array
   const handleGiftUpdate = (updatedGift) => {
