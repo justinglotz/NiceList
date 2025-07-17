@@ -1,4 +1,3 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./pages/**/*.{js,ts,jsx,tsx,mdx}', './components/**/*.{js,ts,jsx,tsx,mdx}', './app/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
@@ -7,6 +6,9 @@ module.exports = {
         sans: ['var(--font-poppins)'], // Set Poppins as default sans font
         poppins: ['var(--font-poppins)'],
         quicksand: ['var(--font-quicksand)'],
+      },
+      colors: {
+        grape: '#A020F0',
       },
     },
   },
