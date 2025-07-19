@@ -38,21 +38,12 @@ export default function GiftMiniCard({ giftObj, onGiftUpdate }) {
   const status3Style = [3, 4].includes(giftObj.status) ? 'bg-[#4CAF50] flex h-full w-1/4 justify-center' : 'flex h-full w-1/4 justify-center';
   const status4Style = [4].includes(giftObj.status) ? 'bg-[#4CAF50] flex h-full w-1/4 justify-center' : 'flex h-full w-1/4 justify-center';
 
-  const handleClick1 = async () => {
+  const handleClick1 = () => {
     if (window.confirm(`Set status of ${currentGiftObj.name} to Selected?`)) {
-      try {
-        const updatedGift = await updateGift({
-          ...currentGiftObj,
-          status: 1,
-        });
-        setCurrentGiftObj(updatedGift); // Update local state immediately
-        if (onGiftUpdate) {
-          onGiftUpdate(updatedGift); // Notify the parent component
-        }
-      } catch (error) {
-        console.error('Error updating gift:', error);
-        // Handle error, e.g., display an error message
-      }
+      onGiftUpdate({
+        ...currentGiftObj,
+        status: 1,
+      });
     }
   };
 

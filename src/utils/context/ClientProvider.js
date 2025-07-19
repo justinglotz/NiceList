@@ -19,22 +19,26 @@
 import PropTypes from 'prop-types';
 import { AuthProvider } from '@/utils/context/authContext'; // AuthProvider handles authentication state and must run on the client.
 import ViewDirectorBasedOnUserAuthStatus from '@/utils/context/ViewDirector'; // ViewDirector manages what the user sees based on their authentication status.
+import { QueryClientProvider } from '@tanstack/react-query';
 import { SearchProvider } from './searchContext';
 import { BudgetProvider } from './budgetContext';
 import { HideCompletedProvider } from './hideCompletedContext';
+import { queryClient } from '../../lib/reactQueryClient';
 
 function ClientProvider({ children }) {
   return (
-    <AuthProvider>
-      <SearchProvider>
-        <BudgetProvider>
-          <HideCompletedProvider>
-            {/* ViewDirectorBasedOnUserAuthStatus determines the view based on the user's authentication state */}
-            <ViewDirectorBasedOnUserAuthStatus>{children}</ViewDirectorBasedOnUserAuthStatus>
-          </HideCompletedProvider>
-        </BudgetProvider>
-      </SearchProvider>
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <SearchProvider>
+          <BudgetProvider>
+            <HideCompletedProvider>
+              {/* ViewDirectorBasedOnUserAuthStatus determines the view based on the user's authentication state */}
+              <ViewDirectorBasedOnUserAuthStatus>{children}</ViewDirectorBasedOnUserAuthStatus>
+            </HideCompletedProvider>
+          </BudgetProvider>
+        </SearchProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 

@@ -76,7 +76,7 @@ function Home() {
         </div>
         <div className="h-[20px] mt-[10px] mb-[15px]">
           <h6 className="text-center font-semibold font-quicksand">
-            <input type="checkbox" className="inline" onChange={handleCheckboxChange} checked={hideCompleted} /> Hide Completed
+            <input type="checkbox" className="inline" onChange={handleCheckboxChange} checked={hideCompleted} /> Hide Completed Gifts
           </h6>
         </div>
       </div>
