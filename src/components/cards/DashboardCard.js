@@ -1,109 +1,34 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ProgressRing from '../ProgressRing';
 import GiftMiniCard from '../GiftMiniCard';
-import { getGiftsByPersonId } from '../../api/giftData';
 import { useSearch } from '../../utils/context/searchContext';
 import { useHideCompleted } from '../../utils/context/hideCompletedContext';
-import Skeleton from '../ui/skeleton';
-import calculateOverallProgress from '../../utils/calculateOverallProgress';
+import { useDashboardData } from '../../hooks/useDashboardData';
+import { useDashboardCardState } from '../../hooks/useDashboardCardState';
+import { useAuth } from '../../utils/context/authContext';
+import SkeletonDashboardCard from './skeletons/SkeletonDashboardCard';
 
 export default function DashboardCard({ personObj, onGiftUpdate, loading = false }) {
-  const [allGifts, setAllGifts] = useState([]);
-  const [displayGifts, setDisplayGifts] = useState([]);
-  const [progress, setProgress] = useState(0);
-  const [expandedView, setExpandedView] = useState(false);
   const { searchQuery } = useSearch();
   const { hideCompleted } = useHideCompleted();
-  const [isVisible, setIsVisible] = useState(false);
+  const user = useAuth();
 
-  useEffect(() => {
-    if (expandedView) {
-      // Reset to hidden first
-      setIsVisible(false);
+  const { gifts: allGifts, handleGiftUpdate: hookGiftUpdate } = useDashboardData(user.uid, personObj.personId);
+  const { expandedView, setExpandedView, isVisible, progress, cardHeight, sortedGifts } = useDashboardCardState(allGifts, hideCompleted);
 
-      // Set timeout to make visible
-      const timer = setTimeout(() => {
-        setIsVisible(true);
-      }, 150);
-
-      // Clean up timer
-      return () => clearTimeout(timer);
-    }
-    setIsVisible(false);
-
-    return () => {};
-  }, [expandedView]);
-
-  // Fetch all gifts once when personId changes
-  useEffect(() => {
-    const fetchGifts = async () => {
-      const fetchedGifts = await getGiftsByPersonId(personObj.personId);
-      setAllGifts(fetchedGifts);
-    };
-
-    fetchGifts();
-  }, [personObj.personId]);
-
-  // Calculate progress based on all gifts, not just displayed ones
-
-  // Update progress and filtered display whenever allGifts or hideCompleted changes
-  useEffect(() => {
-    // Calculate progress based on ALL gifts
-    setProgress(calculateOverallProgress(allGifts));
-
-    // Filter for display only
-    if (hideCompleted) {
-      setDisplayGifts(allGifts.filter((gift) => gift.status !== 4));
-    } else {
-      setDisplayGifts(allGifts);
-    }
-  }, [allGifts, hideCompleted]);
-
-  // Handle gift updates by updating the allGifts array
   const handleGiftUpdate = (updatedGift) => {
-    setAllGifts((prevGifts) =>
-      prevGifts.map((gift) => {
-        if (gift.giftId === updatedGift.giftId) {
-          onGiftUpdate(updatedGift);
-          return updatedGift;
-        }
-        return gift;
-      }),
-    );
+    hookGiftUpdate(updatedGift);
+    if (onGiftUpdate) {
+      onGiftUpdate(updatedGift);
+    }
   };
-
-  let cardHeight = 300;
-  if (displayGifts.length > 2 && expandedView) {
-    cardHeight += (displayGifts.length - 2) * 58;
-  }
-
-  // Sort gifts by date
-  const sortedGifts = [...displayGifts].sort((a, b) => new Date(a.date) - new Date(b.date));
 
   const cardBaseStyle = 'w-[300px] bg-[#1e1e1e] rounded-[12px] transition-all duration-300';
 
   if (loading) {
-    return (
-      <div>
-        <div className={cardBaseStyle} style={{ height: '300px' }}>
-          <div className="flex flex-row h-[136px] w-full">
-            <div className="w-[175px] flex items-start">
-              <Skeleton className="h-[18px] w-2/3 mx-[22px] mt-[22px] bg-gray-700" />
-            </div>
-            <div className="w-[125px] flex items-center justify-center">
-              <Skeleton className="h-[80px] w-[80px] rounded-full bg-gray-700" />
-            </div>
-          </div>
-          <div className="flex flex-col justify-center items-center gap-2 px-4">
-            <Skeleton className="h-[50px] w-full bg-gray-700 rounded-md" />
-            <Skeleton className="h-[50px] w-full bg-gray-700 rounded-md" />
-          </div>
-        </div>
-      </div>
-    );
+    return <SkeletonDashboardCard />;
   }
 
   return (
@@ -120,14 +45,12 @@ export default function DashboardCard({ personObj, onGiftUpdate, loading = false
         <div className="flex flex-col justify-center items-center gap-2">
           {expandedView ? (
             <>
-              {/* First two cards always visible */}
               {sortedGifts.slice(0, 2).map((gift) => (
                 <div key={gift.giftId} className="transition-all duration-300 ease-in-out">
                   <GiftMiniCard giftObj={gift} onGiftUpdate={handleGiftUpdate} />
                 </div>
               ))}
 
-              {/* Additional cards with opacity transition */}
               {sortedGifts.slice(2).map((gift) => (
                 <div key={gift.giftId} className={`transition-all duration-300 ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
                   <GiftMiniCard giftObj={gift} onGiftUpdate={handleGiftUpdate} />
@@ -135,14 +58,13 @@ export default function DashboardCard({ personObj, onGiftUpdate, loading = false
               ))}
             </>
           ) : (
-            // Non-expanded view: show only first two cards
             sortedGifts.slice(0, 2).map((gift) => (
               <div key={gift.giftId} className="transition-all duration-300 ease-in-out">
                 <GiftMiniCard giftObj={gift} onGiftUpdate={handleGiftUpdate} />
               </div>
             ))
           )}
-          {displayGifts.length > 2 && (
+          {sortedGifts.length > 2 && (
             <div className="w-full flex flex-col">
               <button type="button" className="justify-end text-white text-sm" onClick={() => setExpandedView(!expandedView)}>
                 {expandedView ? 'See Less' : 'See More'}
